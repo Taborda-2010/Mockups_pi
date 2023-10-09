@@ -33,6 +33,8 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
         for receta, ingredientes_receta in recetas.items():
             if all(ing.lower() in [ingr.lower() for ingr in ingredientes_receta] for ing in ingredientes):
                 st.markdown(f'**{receta}**', unsafe_allow_html=True)
+                st.write('Ingredientes:', ", ".join(ingredientes_receta))
+                
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h2 id="filtrado" style="text-align: left; color: white; font-style: italic;">Búsqueda de Recetas por Filtrado</h2>', unsafe_allow_html=True)
     st.write('Ingresa los ingredientes que deseas excluir:')
