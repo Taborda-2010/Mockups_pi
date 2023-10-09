@@ -1,5 +1,51 @@
 import streamlit as st
 
+import streamlit as st
+
+# Crear una barra superior personalizada con HTML
+st.markdown("""
+    <style>
+        .custom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .links li {
+            margin-right: 20px;
+        }
+        .links a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <div class="custom-bar">
+        <div class="logo">Mi Aplicación Streamlit</div>
+        <ul class="links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Acerca de</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+    </div>
+""", unsafe_allow_html=True)
+
+# Contenido de la aplicación
+st.title("Mi Aplicación Streamlit")
+st.write("Este es el contenido de la aplicación.")
+
+
 # Datos de ejemplo de recetas con sus respectivos ingredientes
 recetas = {
     'Pasta con salsa de tomate': ['pasta', 'tomate', 'queso'],
