@@ -25,13 +25,16 @@ if selected_option == 'Inicio':
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h2 id="busqueda" style="text-align: left; color: white; font-style: italic;">Búsqueda de Recetas por Ingrediente</h2>', unsafe_allow_html=True)
     
-    ingrediente = st.text_input('Ingresa un ingrediente:')
-    if ingrediente:
-        st.write(f'Recetas que incluyen "{ingrediente.capitalize()}":')
-        for receta, ingredientes in recetas.items():
-            if ingrediente.lower() in [ing.lower() for ing in ingredientes]:
+    ingredientes = st.text_input('Ingresa ingredientes separados por comas:')
+    ingredientes = [ing.strip() for ing in ingredientes.split(',')]  # Convertir la entrada en una lista
+    
+    if ingredientes:
+        st.write(f'Recetas que incluyen los siguientes ingredientes: {", ".join(ingredientes)}')
+        for receta, ingredientes_receta in recetas.items():
+            if all(ing.lower() in [ingr.lower() for ingr in ingredientes_receta] for ing in ingredientes):
                 st.markdown(f'**{receta}**', unsafe_allow_html=True)
-                st.write('Ingredientes:', ", ".join(ingredientes))
+                st.write('Ingredientes:', ", ".join(ingredientes_receta))
+                
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h2 id="filtrado" style="text-align: left; color: white; font-style: italic;">Búsqueda de Recetas por Filtrado</h2>', unsafe_allow_html=True)
     st.write('Ingresa los ingredientes que deseas excluir:')
