@@ -1,9 +1,35 @@
 import streamlit as st
 
-import streamlit as st
-
 # Crear una barra superior personalizada con HTML
-st.markdown("""
+
+
+# Contenido de la aplicación
+st.title("Mi Aplicación Streamlit")
+st.write("Este es el contenido de la aplicación.")
+
+
+# Datos de ejemplo de recetas con sus respectivos ingredientes
+recetas = {
+    'Pasta con salsa de tomate': ['pasta', 'tomate', 'queso'],
+    'Ensalada César': ['lechuga', 'pollo', 'crutones', 'aderezo'],
+    'Pizza Margarita': ['masa de pizza', 'tomate', 'mozzarella', 'albahaca'],
+    'Pata con salsa alfredo': ['pasta', 'mantequilla', 'crema de leche', 'nuez moscada']
+}
+
+# Establecer estilo y formato personalizado
+st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>', unsafe_allow_html=True)
+
+# Crear una barra lateral para la tabla de contenidos
+st.sidebar.title('Tabla de Contenido')
+selected_option = st.sidebar.selectbox(
+    'Selecciona una opción:',
+    ['Inicio', 'Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
+)
+
+# Interfaz de usuario
+if selected_option == 'Inicio':
+    st.write('Bienvenido a una aplicación que te ayudará a descubrir nuevas recetas de cocina basadas en tus ingredientes disponibles y tus preferencias culinarias. Además podrás filtrar las recetas por categorías y criterios de busqueda para excluir ingredientes no deseados.')
+    st.markdown("""
     <style>
         .custom-bar {
             display: flex;
@@ -40,33 +66,6 @@ st.markdown("""
         </ul>
     </div>
 """, unsafe_allow_html=True)
-
-# Contenido de la aplicación
-st.title("Mi Aplicación Streamlit")
-st.write("Este es el contenido de la aplicación.")
-
-
-# Datos de ejemplo de recetas con sus respectivos ingredientes
-recetas = {
-    'Pasta con salsa de tomate': ['pasta', 'tomate', 'queso'],
-    'Ensalada César': ['lechuga', 'pollo', 'crutones', 'aderezo'],
-    'Pizza Margarita': ['masa de pizza', 'tomate', 'mozzarella', 'albahaca'],
-    'Pata con salsa alfredo': ['pasta', 'mantequilla', 'crema de leche', 'nuez moscada']
-}
-
-# Establecer estilo y formato personalizado
-st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>', unsafe_allow_html=True)
-
-# Crear una barra lateral para la tabla de contenidos
-st.sidebar.title('Tabla de Contenido')
-selected_option = st.sidebar.selectbox(
-    'Selecciona una opción:',
-    ['Inicio', 'Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
-)
-
-# Interfaz de usuario
-if selected_option == 'Inicio':
-    st.write('Bienvenido a una aplicación que te ayudará a descubrir nuevas recetas de cocina basadas en tus ingredientes disponibles y tus preferencias culinarias. Además podrás filtrar las recetas por categorías y criterios de busqueda para excluir ingredientes no deseados.')
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h2 id="busqueda" style="text-align: left; color: white; font-style: italic;">Búsqueda de Recetas por Ingrediente</h2>', unsafe_allow_html=True)
