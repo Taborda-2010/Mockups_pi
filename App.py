@@ -142,6 +142,6 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
                     preparacion = row['Direcciones'].split('&')
                     st.write('Preparación paso a paso:')
-                    for i in range(i,len(preparacion)+1):
+                    for i in range(1,len(preparacion)+1):
                         st.write(i,preparacion[i] )
     # ----------------------------------------------------------------
