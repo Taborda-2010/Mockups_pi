@@ -1,6 +1,7 @@
 # Se importan las libreías necesarias
-import pandas as pd
-import streamlit as st
+import pandas as pd  #version: 2.1.1
+import streamlit as st  #version: 1.27.2
+
 
 def cargar_dataset():
     '''Función para importar la base de datos
@@ -51,16 +52,53 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 " font-style: italic;">Búsqueda de Recetas por Filtrado</h2>',\
                       unsafe_allow_html=True)
     st.write('Ingresa los ingredientes que deseas excluir:')
-    ingredientes_excluir = st.text_input('Ingredientes a excluir (separados por comas):')
-    
-    # Convertir la entrada en una lista de ingredientes a excluir
-    ingredientes_excluir = [ingrediente.strip() for ingrediente in\
-                             ingredientes_excluir.split(',')]
-    
-    if ingredientes_excluir:
-        st.write(f'Recetas que no contienen los siguientes ingredientes:\
-                  {", ".join(ingredientes_excluir)}')
-        for receta, ingredientes in recetas.items():
-            if not any(ing.lower() in ingredientes_excluir for ing in ingredientes):
-                st.markdown(f'**{receta}**', unsafe_allow_html=True)
-                st.write('Ingredientes:', ", ".join(ingredientes))
+    # Crear una lista para almacenar las recetas aprobadas
+    recetas_aprobadas = []
+
+    # Crear una lista para almacenar las recetas desaprobadas
+    recetas_desaprobadas = []
+
+    # Definir el ingrediente "azúcar" para buscar en las recetas
+    ingrediente_azucar = "azúcar"
+
+    # Cuadro de entrada para ingredientes a excluir
+    ingredientes_a_excluir = st.text_input('Ingresa ingredientes a excluir (separados por comas):')
+
+    # Opción para excluir recetas con azúcar
+    excluir_azucar = st.checkbox('Excluir recetas con azúcar')
+
+    if not df.empty:
+        for idx, row in df.iterrows():
+            mostrar_receta = True
+            
+            # Verificar si se debe excluir la receta debido a ingredientes excluidos
+            if ingredientes_a_excluir:
+                ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
+                for ingrediente in ingredientes_excluidos:
+                    if ingrediente in row['NER']:
+                        mostrar_receta = False
+            
+            # Verificar si se debe excluir la receta debido al azúcar
+            if excluir_azucar and ingrediente_azucar in row['NER']:
+                mostrar_receta = False
+            
+            # Mostrar la receta si no se excluye
+            if mostrar_receta:
+                st.write(row['Título'])
+                aprobar = st.button(f'Aprobar {row["Título"]}')
+                desaprobar = st.button(f'Desaprobar {row["Título"]}')
+                if aprobar:
+                    recetas_aprobadas.append(row['Título'])
+                if desaprobar:
+                    recetas_desaprobadas.append(row['Título'])
+
+    # Mostrar las recetas aprobadas y desaprobadas
+    if recetas_aprobadas:
+        st.subheader('Recetas aprobadas:')
+        st.write(recetas_aprobadas)
+
+    if recetas_desaprobadas:
+        st.subheader('Recetas desaprobadas:')
+        st.write(recetas_desaprobadas)
+
+        
