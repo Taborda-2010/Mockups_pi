@@ -1,11 +1,12 @@
-import streamlit as st
-import pandas as pd
+# Se importan las libreías necesarias
+import pandas as pd  #version: 2.1.1
+import streamlit as st  #version: 1.27.2
 
-# Función que utiliza la base de datos de 250 lineas de recetas
 def cargar_dataset():
+    '''Función para importar la base de datos
+    de las 250 recetas'''
     df = pd.read_csv('db_reducida_spanish.csv')
     return df
-
 
 # Cargar el conjunto de datos
 df = cargar_dataset()
@@ -30,8 +31,8 @@ if selected_option == 'Inicio':
              " busqueda para excluir ingredientes no deseados.')
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
-    st.markdown('<h2 id="busqueda" style="text-align: left; color: white;"\
-                " font-style: italic;">Búsqueda de Recetas por Ingrediente</h2>',\
+    st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
+                " font-style: italic;">Búsqueda de Recetas por Ingrediente</h3>',\
                       unsafe_allow_html=True)
     
     ingrediente = st.text_input('Ingresa un ingrediente:')
@@ -46,20 +47,44 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                 st.write(row['título'])
         
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
-    st.markdown('<h2 id="filtrado" style="text-align: left; color: white;"\
-                " font-style: italic;">Búsqueda de Recetas por Filtrado</h2>',\
+    st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
+                " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
                       unsafe_allow_html=True)
-    st.write('Ingresa los ingredientes que deseas excluir:')
-    ingredientes_excluir = st.text_input('Ingredientes a excluir (separados por comas):')
-    
-    # Convertir la entrada en una lista de ingredientes a excluir
-    ingredientes_excluir = [ingrediente.strip() for ingrediente in\
-                             ingredientes_excluir.split(',')]
-    
-    if ingredientes_excluir:
-        st.write(f'Recetas que no contienen los siguientes ingredientes:\
-                  {", ".join(ingredientes_excluir)}')
-        for receta, ingredientes in recetas.items():
-            if not any(ing.lower() in ingredientes_excluir for ing in ingredientes):
-                st.markdown(f'**{receta}**', unsafe_allow_html=True)
-                st.write('Ingredientes:', ", ".join(ingredientes))
+   
+    # Definir el ingrediente "azúcar" para buscar en las recetas
+    ingrediente_azucar = "azúcar"
+
+    # Cuadro de entrada para ingredientes a excluir
+    ingredientes_a_excluir = st.text_input('Ingresa ingredientes a excluir (separados por comas):')
+
+    # Opción para excluir recetas con azúcar
+    excluir_azucar = st.checkbox('Excluir recetas con azúcar')
+
+    if not df.empty:
+        for idx, row in df.iterrows():
+            mostrar_receta = True
+
+            # Verificar si se debe excluir la receta debido a ingredientes excluidos
+            if ingredientes_a_excluir:
+                ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
+                for ingrediente in ingredientes_excluidos:
+                    if ingrediente in row['NER']:
+                        mostrar_receta = False
+
+            # Verificar si se debe excluir la receta debido al azúcar
+            if excluir_azucar and ingrediente_azucar in row['NER']:
+                mostrar_receta = False
+
+            # Mostrar la receta si no se excluye
+            if mostrar_receta:
+                receta = st.button(row['título'])
+
+                # Agregar una sección de detalles emergente
+                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+                    st.write(row['Direcciones'])
+
+
+
+
+
+        
