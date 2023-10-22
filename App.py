@@ -15,11 +15,7 @@ df = cargar_dataset()
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
              unsafe_allow_html=True)
 
-# Ventana tratamiento de datos
-if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=False):
-    st.sidebar.markdown("# Política de Tratamiento de Datos Personales")
-    st.sidebar.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
-    st.sidebar.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
+
 
 # Crear una barra lateral para la tabla de contenidos
 st.sidebar.title('Tabla de Contenido')
@@ -30,6 +26,11 @@ selected_option = st.sidebar.selectbox(
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
+    # Ventana tratamiento de datos
+    if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=False):
+        st.sidebar.markdown("# Política de Tratamiento de Datos Personales")
+        st.sidebar.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
+        st.sidebar.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
     st.write('Bienvenido a una aplicación que te ayudará\
               a descubrir nuevas recetas de cocina basadas\
               en tus ingredientes disponibles y tus preferencias culinarias.\
