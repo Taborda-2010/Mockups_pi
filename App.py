@@ -84,13 +84,13 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             
             # Mostrar la receta si no se excluye
             if mostrar_receta:
-                st.write(row['Título'])
-                aprobar = st.button(f'Aprobar {row["Título"]}')
-                desaprobar = st.button(f'Desaprobar {row["Título"]}')
+                st.write(row['título'])
+                aprobar = st.button(f'Aprobar {row["título"]}')
+                desaprobar = st.button(f'Desaprobar {row["título"]}')
                 if aprobar:
-                    recetas_aprobadas.append(row['Título'])
+                    recetas_aprobadas.append(row['título'])
                 if desaprobar:
-                    recetas_desaprobadas.append(row['Título'])
+                    recetas_desaprobadas.append(row['título'])
 
     # Mostrar las recetas aprobadas y desaprobadas
     if recetas_aprobadas:
