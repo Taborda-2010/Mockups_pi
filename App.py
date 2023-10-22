@@ -129,12 +129,19 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
+
+
+                titulo = row['título']
+
                 # Mostrar la receta si no se excluye
-                st.write(row['título'])
+                st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">{titulo}</h4>',\
+                      unsafe_allow_html=True)
+
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
                     preparacion = row['Direcciones'].split('&')
                     st.write('Preparación paso a paso:')
-                    for i in range(len(preparacion)):
+                    for i in range(i,len(preparacion)+1):
                         st.write(i,preparacion[i] )
     # ----------------------------------------------------------------
