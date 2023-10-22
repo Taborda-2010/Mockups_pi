@@ -45,7 +45,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             st.subheader('Recetas que contienen "{}":'.format(ingrediente))
             for idx, row in df_ingredientes.iterrows():
                 st.write(row['título'])
-        
+
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
@@ -60,7 +60,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
 
-    if not df.empty:
+    """ if not df.empty:
         for idx, row in df.iterrows():
             mostrar_receta = True
 
@@ -81,10 +81,47 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+                    st.write(row['Direcciones'])"""
+
+    #MODIFICACIÓN DE PAGINACIÓN
+    #----------------------------------------------------------------
+
+    # Páginas de recetas
+    recetas_por_pagina = 10  # Cantidad de recetas por página
+    pagina = st.number_input('Página', min_value=1, value=1)
+
+    if not df.empty:
+        # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
+        recetas_filtradas = []
+        for idx, row in df.iterrows():
+            mostrar_receta = True
+
+            # Verificar si se debe excluir la receta debido a ingredientes excluidos
+            if ingredientes_a_excluir:
+                ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
+                for ingrediente in ingredientes_excluidos:
+                    if ingrediente in row['NER']:
+                        mostrar_receta = False
+
+            # Verificar si se debe excluir la receta debido al azúcar
+            if excluir_azucar and ingrediente_azucar in row['NER']:
+                mostrar_receta = False
+
+            # Agregar la receta a la lista si no se excluye
+            if mostrar_receta:
+                recetas_filtradas.append(row)
+
+        # Calcular los índices de inicio y fin para la página actual
+        inicio = (pagina - 1) * recetas_por_pagina
+        fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
+
+        if recetas_filtradas:
+            st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
+            for idx in range(inicio, fin):
+                row = recetas_filtradas[idx]
+                # Mostrar la receta si no se excluye
+                receta = st.button(row['título'])
+                # Agregar una sección de detalles emergente
+                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
                     st.write(row['Direcciones'])
-
-
-
-
-
-        
+    # ----------------------------------------------------------------
