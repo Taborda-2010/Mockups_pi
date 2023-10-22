@@ -27,7 +27,7 @@ selected_option = st.sidebar.selectbox(
 # Interfaz de usuario
 if selected_option == 'Inicio':
     # Ventana tratamiento de datos
-    if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=False):
+    if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=True):
         st.sidebar.markdown("# Política de Tratamiento de Datos Personales")
         st.sidebar.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
         st.sidebar.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
