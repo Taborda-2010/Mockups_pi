@@ -113,7 +113,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
         #FILTRO VEGETARIANO
         #----------------------------------------------------------------
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
-            if excluir_no_vegetarianas and (ingredientes_no_vegetarianos[i] in row['NER'] for i in range(len(ingredientes_no_vegetarianos))):
+            if excluir_no_vegetarianas and ((ingredientes_no_vegetarianos[0] or ingredientes_no_vegetarianos[1] or ingredientes_no_vegetarianos[2]) in row['NER']):
                 mostrar_receta = False
         #----------------------------------------------------------------
 
