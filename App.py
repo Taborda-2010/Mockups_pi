@@ -32,8 +32,8 @@ if selected_option == 'Inicio':
              " busqueda para excluir ingredientes no deseados.')
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
-    st.markdown('<h2 id="busqueda" style="text-align: left; color: white;"\
-                " font-style: italic;">Búsqueda de Recetas por Ingrediente</h2>',\
+    st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
+                " font-style: italic;">Búsqueda de Recetas por Ingrediente</h3>',\
                       unsafe_allow_html=True)
     
     ingrediente = st.text_input('Ingresa un ingrediente:')
@@ -48,16 +48,10 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                 st.write(row['título'])
         
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
-    st.markdown('<h2 id="filtrado" style="text-align: left; color: white;"\
-                " font-style: italic;">Búsqueda de Recetas por Filtrado</h2>',\
+    st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
+                " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
                       unsafe_allow_html=True)
-    st.write('Ingresa los ingredientes que deseas excluir:')
-    # Crear una lista para almacenar las recetas aprobadas
-    recetas_aprobadas = []
-
-    # Crear una lista para almacenar las recetas desaprobadas
-    recetas_desaprobadas = []
-
+   
     # Definir el ingrediente "azúcar" para buscar en las recetas
     ingrediente_azucar = "azúcar"
 
@@ -84,21 +78,10 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             
             # Mostrar la receta si no se excluye
             if mostrar_receta:
-                st.write(row['título'])
-                aprobar = st.button(f'Aprobar {row["título"]}')
-                desaprobar = st.button(f'Desaprobar {row["título"]}')
-                if aprobar:
-                    recetas_aprobadas.append(row['título'])
-                if desaprobar:
-                    recetas_desaprobadas.append(row['título'])
+                receta= st.button(row['título'])
 
-    # Mostrar las recetas aprobadas y desaprobadas
-    if recetas_aprobadas:
-        st.subheader('Recetas aprobadas:')
-        st.write(recetas_aprobadas)
 
-    if recetas_desaprobadas:
-        st.subheader('Recetas desaprobadas:')
-        st.write(recetas_desaprobadas)
+
+
 
         
