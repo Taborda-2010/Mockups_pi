@@ -43,7 +43,7 @@ if selected_option == 'Inicio':
         contenido = file.read()
 
     # Muestra el contenido del archivo en la aplicación de Streamlit
-    st.text(contenido)
+    st.write(contenido)
 
 
 
