@@ -101,14 +101,8 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 # Mostrar la receta si no se excluye
                 receta = st.button(row['título'])
                 # Agregar una sección de detalles emergente
-                """with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    for i in row['Direcciones'].split('","'):
-                        st.write(i)"""
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    directions = row['Direcciones']
-                    # Procesa la cadena de direcciones para convertirla en una lista
-                    directions_list = [step.strip() for step in directions.split('\n')]
-                    # Convierte la lista en una cadena con comas y comillas dobles
-                    formatted_directions = ', '.join(['"{}"'.format(step) for step in directions_list])
-                    st.write('[' + formatted_directions + ']')
+                    for i in row['Direcciones']:
+                        for j in i:
+                            st.write(j)
     # ----------------------------------------------------------------
