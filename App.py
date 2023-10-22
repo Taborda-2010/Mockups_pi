@@ -78,7 +78,12 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             
             # Mostrar la receta si no se excluye
             if mostrar_receta:
-                receta= st.button(row['título'])
+                receta = st.button(row['título'])
+                st.write(row['Ingredientes'])
+
+                if receta:
+                    st.write(row['Direcciones'])
+
 
 
 
