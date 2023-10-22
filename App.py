@@ -1,11 +1,12 @@
-import streamlit as st
+# Se importan las libreías necesarias
 import pandas as pd
+import streamlit as st
 
-# Función que utiliza la base de datos de 250 lineas de recetas
 def cargar_dataset():
+    '''Función para importar la base de datos
+    de las 250 recetas'''
     df = pd.read_csv('db_reducida_spanish.csv')
     return df
-
 
 # Cargar el conjunto de datos
 df = cargar_dataset()
