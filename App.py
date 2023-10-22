@@ -24,11 +24,11 @@ selected_option = st.sidebar.selectbox(
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
-    st.write('Bienvenido a una aplicación que te ayudará"\
-             " a descubrir nuevas recetas de cocina basadas"\
-             " en tus ingredientes disponibles y tus preferencias culinarias."\
-             " Además podrás filtrar las recetas por categorías y criterios de"\
-             " busqueda para excluir ingredientes no deseados.')
+    st.write('Bienvenido a una aplicación que te ayudará\
+              a descubrir nuevas recetas de cocina basadas\
+              en tus ingredientes disponibles y tus preferencias culinarias.\
+              Además podrás filtrar las recetas por categorías y criterios de\
+              busqueda para excluir ingredientes no deseados.')
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
@@ -59,6 +59,9 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
+
+    # Definir la lista de ingredientes no vegetarianos
+    ingredientes_no_vegetarianos = ["pollo", "carne", "pavo"]
 
     #FILTRO VEGETARIANO
     # Opción para excluir recetas no vegetarianas
@@ -92,7 +95,6 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
         #----------------------------------------------------------------
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
             if excluir_no_vegetarianas:
-                ingredientes_no_vegetarianos = ["pollo", "carne", "pavo"]  # Lista de ingredientes no vegetarianos
                 for ingrediente in ingredientes_no_vegetarianos:
                     if re.search(fr'\b{re.escape(ingrediente)}\b', row['NER'], re.IGNORECASE):
                         mostrar_receta = False
