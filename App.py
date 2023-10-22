@@ -15,6 +15,8 @@ df = cargar_dataset()
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
              unsafe_allow_html=True)
 
+
+
 # Crear una barra lateral para la tabla de contenidos
 st.sidebar.title('Tabla de Contenido')
 selected_option = st.sidebar.selectbox(
@@ -24,11 +26,16 @@ selected_option = st.sidebar.selectbox(
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
-    st.write('Bienvenido a una aplicación que te ayudará"\
-             " a descubrir nuevas recetas de cocina basadas"\
-             " en tus ingredientes disponibles y tus preferencias culinarias."\
-             " Además podrás filtrar las recetas por categorías y criterios de"\
-             " busqueda para excluir ingredientes no deseados.')
+    # Ventana tratamiento de datos
+    if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=False):
+        st.sidebar.markdown("# Política de Tratamiento de Datos Personales")
+        st.sidebar.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
+        st.sidebar.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
+    st.write('Bienvenido a una aplicación que te ayudará\
+              a descubrir nuevas recetas de cocina basadas\
+              en tus ingredientes disponibles y tus preferencias culinarias.\
+              Además podrás filtrar las recetas por categorías y criterios de\
+              busqueda para excluir ingredientes no deseados.')
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
@@ -60,7 +67,12 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
 
+    # Definir la lista de ingredientes no vegetarianos
+    ingredientes_no_vegetarianos = ["pollo", "carne", "pavo"]
 
+    #FILTRO VEGETARIANO
+    # Opción para excluir recetas no vegetarianas
+    excluir_no_vegetarianas = st.checkbox('Excluir recetas no vegetarianas')
 
     #MODIFICACIÓN DE PAGINACIÓN
     #----------------------------------------------------------------
@@ -85,6 +97,13 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             # Verificar si se debe excluir la receta debido al azúcar
             if excluir_azucar and ingrediente_azucar in row['NER']:
                 mostrar_receta = False
+
+        #FILTRO VEGETARIANO
+        #----------------------------------------------------------------
+            # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
+            if excluir_no_vegetarianas and ingredientes_no_vegetarianos[0] in row['NER'] and ingredientes_no_vegetarianos[1] in row['NER'] and ingredientes_no_vegetarianos[2] in row['NER']:
+                mostrar_receta = False
+        #----------------------------------------------------------------
 
             # Agregar la receta a la lista si no se excluye
             if mostrar_receta:
