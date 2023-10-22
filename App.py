@@ -133,6 +133,8 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 st.write(row['título'])
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    for i in row['Direcciones'].split('&'):
-                        st.write(i)
+                    preparacion = row['Direcciones'].split('&')
+                    st.write('Preparación paso a paso:')
+                    for i in range(len(preparacion)):
+                        st.write(i,preparacion[i] )
     # ----------------------------------------------------------------
