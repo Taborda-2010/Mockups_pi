@@ -60,28 +60,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
 
-    """ if not df.empty:
-        for idx, row in df.iterrows():
-            mostrar_receta = True
 
-            # Verificar si se debe excluir la receta debido a ingredientes excluidos
-            if ingredientes_a_excluir:
-                ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
-                for ingrediente in ingredientes_excluidos:
-                    if ingrediente in row['NER']:
-                        mostrar_receta = False
-
-            # Verificar si se debe excluir la receta debido al azúcar
-            if excluir_azucar and ingrediente_azucar in row['NER']:
-                mostrar_receta = False
-
-            # Mostrar la receta si no se excluye
-            if mostrar_receta:
-                receta = st.button(row['título'])
-
-                # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    st.write(row['Direcciones'])"""
 
     #MODIFICACIÓN DE PAGINACIÓN
     #----------------------------------------------------------------
@@ -123,5 +102,6 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 receta = st.button(row['título'])
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    st.write(row['Direcciones'])
+                    for i in row['Direcciones'].split(","):
+                        st.write(i)
     # ----------------------------------------------------------------
