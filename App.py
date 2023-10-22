@@ -102,5 +102,6 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 receta = st.button(row['título'])
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    st.write(i for i in row['Direcciones'])
+                    for i in row['Direcciones'].split(","):
+                        st.write(i)
     # ----------------------------------------------------------------
