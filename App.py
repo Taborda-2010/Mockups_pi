@@ -60,7 +60,9 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
 
-
+    #FILTRO VEGETARIANO
+    # Opción para excluir recetas no vegetarianas
+    excluir_no_vegetarianas = st.checkbox('Excluir recetas no vegetarianas')
 
     #MODIFICACIÓN DE PAGINACIÓN
     #----------------------------------------------------------------
@@ -85,6 +87,16 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             # Verificar si se debe excluir la receta debido al azúcar
             if excluir_azucar and ingrediente_azucar in row['NER']:
                 mostrar_receta = False
+
+        #FILTRO VEGETARIANO
+        #----------------------------------------------------------------
+            # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
+            if excluir_no_vegetarianas:
+                ingredientes_no_vegetarianos = ["pollo", "carne", "pavo"]  # Lista de ingredientes no vegetarianos
+                for ingrediente in ingredientes_no_vegetarianos:
+                    if re.search(fr'\b{re.escape(ingrediente)}\b', row['NER'], re.IGNORECASE):
+                        mostrar_receta = False
+        #----------------------------------------------------------------
 
             # Agregar la receta a la lista si no se excluye
             if mostrar_receta:
