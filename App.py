@@ -94,10 +94,8 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
         #FILTRO VEGETARIANO
         #----------------------------------------------------------------
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
-            if excluir_no_vegetarianas:
-                for ingrediente in ingredientes_no_vegetarianos:
-                    if re.search(fr'\b{re.escape(ingrediente)}\b', row['NER'], re.IGNORECASE):
-                        mostrar_receta = False
+            if excluir_no_vegetarianas and ingredientes_no_vegetarianos[0] in row['NER'] and ingredientes_no_vegetarianos[1] in row['NER'] and ingredientes_no_vegetarianos[2] in row['NER']:
+                mostrar_receta = False
         #----------------------------------------------------------------
 
             # Agregar la receta a la lista si no se excluye
