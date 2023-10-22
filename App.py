@@ -33,7 +33,8 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown("# Política de Tratamiento de Datos Personales")
+    st.markdown('<h2 style="text-align: center; color: white;">Política de Tratamiento de Datos Personales"\
+        "</h2>', unsafe_allow_html=True)
     st.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
     st.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
 
