@@ -33,10 +33,18 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown('<h2 style="text-align: center; color: white;">Política de Tratamiento de Datos Personales"\
-        "</h2>', unsafe_allow_html=True)
-    st.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
-    st.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
+    st.markdown('<h2 style="text-align: center; color: white;"\
+        ">Política de Tratamiento de Datos Personales</h2>', unsafe_allow_html=True)
+    # Ruta al archivo de texto
+    archivo_txt = "Politica_tratamiento_de_datos.txt"
+
+    # Lee el contenido del archivo
+    with open(archivo_txt, "r") as file:
+        contenido = file.read()
+
+    # Muestra el contenido del archivo en la aplicación de Streamlit
+    st.text(contenido)
+
 
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
