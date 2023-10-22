@@ -33,8 +33,8 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown('<h2 style="text-align: center; color: white;"\
-        ">Política de Tratamiento de Datos Personales</h2>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: left; color: white;"\
+        ">Política de Tratamiento de Datos Personales</h3>', unsafe_allow_html=True)
     # Ruta al archivo de texto
     archivo_txt = "Politica_tratamiento_de_datos.txt"
 
@@ -68,11 +68,13 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                 " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
                       unsafe_allow_html=True)
    
-    # Definir el ingrediente "azúcar" para buscar en las recetas
-    ingrediente_azucar = "azúcar"
+
 
     # Cuadro de entrada para ingredientes a excluir
     ingredientes_a_excluir = st.text_input('Ingresa ingredientes a excluir (separados por comas):')
+
+    # Definir el ingrediente "azúcar" para buscar en las recetas
+    ingrediente_azucar = "azúcar"
 
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
@@ -111,7 +113,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
         #FILTRO VEGETARIANO
         #----------------------------------------------------------------
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
-            if excluir_no_vegetarianas and ingredientes_no_vegetarianos[0] in row['NER'] and ingredientes_no_vegetarianos[1] in row['NER'] and ingredientes_no_vegetarianos[2] in row['NER']:
+            if excluir_no_vegetarianas and (ingredientes_no_vegetarianos[i] in row['NER'] for i in range(len(ingredientes_no_vegetarianos))):
                 mostrar_receta = False
         #----------------------------------------------------------------
 
