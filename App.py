@@ -130,10 +130,9 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
                 # Mostrar la receta si no se excluye
-                receta = st.button(row['título'])
+                st.write(row['título'])
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    for i in row['Direcciones']:
-                        for j in i:
-                            st.write(j)
+                    for i in row['Direcciones'].split('&'):
+                        st.write(i)
     # ----------------------------------------------------------------
