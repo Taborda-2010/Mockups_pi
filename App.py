@@ -26,16 +26,17 @@ selected_option = st.sidebar.selectbox(
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
-    # Ventana tratamiento de datos
-    if st.sidebar.checkbox("Mostrar política de tratamiento de datos personales", value=True):
-        st.sidebar.markdown("# Política de Tratamiento de Datos Personales")
-        st.sidebar.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
-        st.sidebar.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
     st.write('Bienvenido a una aplicación que te ayudará\
               a descubrir nuevas recetas de cocina basadas\
               en tus ingredientes disponibles y tus preferencias culinarias.\
               Además podrás filtrar las recetas por categorías y criterios de\
               busqueda para excluir ingredientes no deseados.')
+
+    # Ventana tratamiento de datos
+    st.markdown("# Política de Tratamiento de Datos Personales")
+    st.write("Aquí puedes agregar el texto de tu política de tratamiento de datos personales.")
+    st.write("Asegúrate de cumplir con todas las regulaciones y leyes de privacidad aplicables.")
+
 
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
