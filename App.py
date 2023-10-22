@@ -1,7 +1,7 @@
 # Se importan las libreías necesarias
 import pandas as pd  #version: 2.1.1
 import streamlit as st  #version: 1.27.2
-
+import webbrowser
 
 def cargar_dataset():
     '''Función para importar la base de datos
@@ -80,10 +80,10 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             if mostrar_receta:
                 receta = st.button(row['título'])
                 st.write(row['Ingredientes'])
-
+                
                 if receta:
-                    st.write(row['Direcciones'])
-
+                    # Cuando se hace clic en el botón de la receta, abrir las direcciones en una nueva pestaña
+                    webbrowser.open_new_tab(row['Direcciones'])
 
 
 
