@@ -41,7 +41,7 @@ if selected_option == 'Inicio':
         contenido = file.read()
     st.write(contenido)
 
-
+# Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda por Nombre de Receta':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda por Nombre de Receta</h3>',\
@@ -50,19 +50,19 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
     nombre = st.text_input('Ingresa el nombre:')
     if nombre:
         # Filtrar el DataFrame por ingredientes
-        df_ingredientes = df[df['título'].str.contains(nombre, case=False, na=False)]
+        df_titulo = df[df['título'].str.contains(nombre, case=False, na=False)]
         
          # Páginas de recetas
         recetas_por_pagina = 10  # Cantidad de recetas por página
         pagina = st.number_input('Página', min_value=1, value=1)
 
         # Mostrar los nombres de las recetas
-        if not df_ingredientes.empty:
+        if not df_titulo.empty:
             st.subheader('Recetas que contienen "{}":'.format(nombre))
   
             # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
             recetas_filtradas = []
-            for idx, row in df_ingredientes.iterrows():
+            for idx, row in df_titulo.iterrows():
                 #mostrar_receta = True
                 recetas_filtradas.append(row)
 
