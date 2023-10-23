@@ -77,7 +77,16 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
             recetas_filtradas = []
             for idx, row in df_ingredientes.iterrows():
-                mostrar_receta = True
+                mostrar_receta = False
+
+            if ingrediente:
+                ingredientes_filtrados = [ingrediente.strip() for ingr in ingrediente.split(',')]
+                for ingrediente in ingredientes_filtrados:
+                    if ingrediente in row['NER']:
+                        mostrar_receta = True
+
+                if mostrar_receta:
+                    recetas_filtradas.append(row)
 
         # Calcular los índices de inicio y fin para la página actual
         inicio = (pagina - 1) * recetas_por_pagina
