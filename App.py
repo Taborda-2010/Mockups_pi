@@ -51,6 +51,22 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda de Recetas por Ingrediente</h3>',\
                       unsafe_allow_html=True)
+
+    #MODIFICACIÓN DE PAGINACIÓN
+    #----------------------------------------------------------------
+
+    # Páginas de recetas
+    recetas_por_pagina = 10  # Cantidad de recetas por página
+    pagina = st.number_input('Página', min_value=1, value=1)
+
+    if not df.empty:
+        # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
+        recetas_filtradas = []
+        for idx, row in df.iterrows():
+            mostrar_receta = True
+
+           
+                ##############################################################################################
     
     ingrediente = st.text_input('Ingresa un ingrediente:')
     if ingrediente:
@@ -144,8 +160,8 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
 
-                    st.markdown(f'<h6 id="filtrado" style="text-align: left; color: skyblue;"\
-                " font-style: italic;">Ingredientes:</h6>',\
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Ingredientes:</h5>',\
                       unsafe_allow_html=True)
 
                     for i in range(len(ingredientes)):
@@ -154,8 +170,8 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                     # Impresion de preparación
                     preparacion = row['Direcciones'].split('&')
 
-                    st.markdown(f'<h6 id="filtrado" style="text-align: left; color: skyblue;"\
-                " font-style: italic;">Preparación paso a paso:</h6>',\
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Preparación paso a paso:</h5>',\
                       unsafe_allow_html=True)
 
                     for i in range(len(preparacion)):
