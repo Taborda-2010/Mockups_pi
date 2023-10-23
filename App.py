@@ -41,6 +41,20 @@ if selected_option == 'Inicio':
         contenido = file.read()
     st.write(contenido)
 
+    # Crear dos columnas para los checkboxes
+    col1, col2 = st.beta_columns(2)
+
+    # Opciones para aceptar o denegar
+    aceptar = col1.checkbox("Acepto los términos y condiciones")
+    denegar = col2.checkbox("Deniego los términos y condiciones")
+
+    # Mensaje de confirmación o denegación
+    if aceptar:
+        st.success("¡Has aceptado los términos y condiciones!")
+    elif denegar:
+        st.error("Has denegado los términos y condiciones. La aplicación se cerrará.")
+        st.stop()
+
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda por Nombre de Receta':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
