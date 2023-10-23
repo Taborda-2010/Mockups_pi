@@ -49,11 +49,16 @@ if selected_option == 'Inicio':
     denegar = col2.checkbox("Deniego los términos y condiciones")
 
     # Mensaje de confirmación o denegación
+    # Mensaje de confirmación o denegación
     if aceptar:
         st.success("¡Has aceptado los términos y condiciones!")
-    elif denegar:
-        st.error("Has denegado los términos y condiciones. La aplicación se cerrará.")
-        st.stop()
+    else:
+        st.warning("Debes aceptar los términos y condiciones para continuar.")
+
+    # Resto de la aplicación
+    if aceptar:
+        # Aquí puedes continuar con el resto de tu aplicación si el usuario acepta
+        pass
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda por Nombre de Receta':
