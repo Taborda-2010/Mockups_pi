@@ -60,24 +60,28 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
         # Filtrar el DataFrame por ingredientes
         df_ingredientes = df[df['NER'].str.contains(ingrediente, case=False, na=False)]
         
-        # Mostrar los nombres de las recetas
-        if not df_ingredientes.empty:
-            st.subheader('Recetas que contienen "{}":'.format(ingrediente))
-            for idx, row in df_ingredientes.iterrows():
-                st.write(row['título'])
-
-                #MODIFICACIÓN DE PAGINACIÓN
-        #----------------------------------------------------------------
-
-        # Páginas de recetas
+         # Páginas de recetas
         recetas_por_pagina = 10  # Cantidad de recetas por página
         pagina = st.number_input('Página', min_value=1, value=1)
 
+        # Mostrar los nombres de las recetas
         if not df_ingredientes.empty:
+            st.subheader('Recetas que contienen "{}":'.format(ingrediente))
+  
             # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
             recetas_filtradas = []
             for idx, row in df_ingredientes.iterrows():
-                mostrar_receta = True
+                #mostrar_receta = True
+                recetas_filtradas.append(row)
+
+            """if ingrediente:
+                ingredientes_filtrados = [ingr.strip() for ingr in ingrediente.split(',')]
+                for ingrediente in ingredientes_filtrados:
+                    if ingrediente in row['NER']:
+                        mostrar_receta = True"""
+
+            """if mostrar_receta:
+                recetas_filtradas.append(row)"""
 
         # Calcular los índices de inicio y fin para la página actual
         inicio = (pagina - 1) * recetas_por_pagina
