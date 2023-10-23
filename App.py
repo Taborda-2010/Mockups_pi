@@ -224,15 +224,15 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             if ingredientes_a_excluir:
                 ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
                 for ingrediente in ingredientes_excluidos:
-                    if ingrediente in row['NER']:
+                    if ingrediente in row['Ingredientes']:
                         mostrar_receta = False
 
             # Verificar si se debe excluir la receta debido al azúcar
-            if excluir_azucar and ingrediente_azucar in row['NER']:
+            if excluir_azucar and ingrediente_azucar in row['Ingredientes']:
                 mostrar_receta = False
 
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
-            if excluir_no_vegetarianas and ((ingredientes_no_vegetarianos[0] or ingredientes_no_vegetarianos[1] or ingredientes_no_vegetarianos[2]) in row['NER']):
+            if excluir_no_vegetarianas and ((ingredientes_no_vegetarianos[0] or ingredientes_no_vegetarianos[1] or ingredientes_no_vegetarianos[2]) in row['Ingredientes']):
                 mostrar_receta = False
 
             # Agregar la receta a la lista si no se excluye
