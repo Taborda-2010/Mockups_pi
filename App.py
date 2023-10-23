@@ -52,20 +52,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                 " font-style: italic;">Búsqueda de Recetas por Ingrediente</h3>',\
                       unsafe_allow_html=True)
 
-    #MODIFICACIÓN DE PAGINACIÓN
-    #----------------------------------------------------------------
 
-    # Páginas de recetas
-    recetas_por_pagina = 10  # Cantidad de recetas por página
-    pagina = st.number_input('Página', min_value=1, value=1)
-
-    if not df.empty:
-        # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
-        recetas_filtradas = []
-        for idx, row in df.iterrows():
-            mostrar_receta = True
-
-           
                 ##############################################################################################
     
     ingrediente = st.text_input('Ingresa un ingrediente:')
@@ -78,6 +65,21 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             st.subheader('Recetas que contienen "{}":'.format(ingrediente))
             for idx, row in df_ingredientes.iterrows():
                 st.write(row['título'])
+
+                #MODIFICACIÓN DE PAGINACIÓN
+        #----------------------------------------------------------------
+
+        # Páginas de recetas
+        recetas_por_pagina = 10  # Cantidad de recetas por página
+        pagina = st.number_input('Página', min_value=1, value=1)
+
+        if not df_ingredientes.empty:
+            # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
+            recetas_filtradas = []
+            for idx, row in df_ingredientes.iterrows():
+                mostrar_receta = True
+
+           
 
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
