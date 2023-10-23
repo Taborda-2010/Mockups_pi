@@ -63,8 +63,8 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
         # Mostrar los nombres de las recetas
         if not df_ingredientes.empty:
             st.subheader('Recetas que contienen "{}":'.format(ingrediente))
-            for idx, row in df_ingredientes.iterrows():
-                st.write(row['título'])
+            """for idx, row in df_ingredientes.iterrows():
+                st.write(row['título'])"""
 
                 #MODIFICACIÓN DE PAGINACIÓN
         #----------------------------------------------------------------
