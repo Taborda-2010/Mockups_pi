@@ -140,8 +140,24 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+
+                    # Impresion de ingredientes
+                    ingredientes = row['Ingredientes'].split('&')
+
+                    st.markdown(f'<h6 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Ingredientes:</h6>',\
+                      unsafe_allow_html=True)
+
+                    for i in range(len(ingredientes)):
+                        st.write(i+1 , ingredientes[i] )
+
+                    # Impresion de preparación
                     preparacion = row['Direcciones'].split('&')
-                    st.write('Preparación paso a paso:')
+
+                    st.markdown(f'<h6 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Preparación paso a paso:</h6>',\
+                      unsafe_allow_html=True)
+
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
     # ----------------------------------------------------------------
