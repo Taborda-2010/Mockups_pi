@@ -73,10 +73,10 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
         recetas_por_pagina = 10  # Cantidad de recetas por página
         pagina = st.number_input('Página', min_value=1, value=1)
 
-        if not df.empty:
+        if not df_ingredientes.empty:
             # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
             recetas_filtradas = []
-            for idx, row in df.iterrows():
+            for idx, row in df_ingredientes.iterrows():
                 mostrar_receta = True
 
            
