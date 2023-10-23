@@ -42,7 +42,7 @@ if selected_option == 'Inicio':
     st.write(contenido)
 
     # Crear dos columnas para los checkboxes
-    col1, col2 = st.beta_columns(2)
+    col1, col2 = st.columns(2)
 
     # Opciones para aceptar o denegar
     aceptar = col1.checkbox("Acepto los términos y condiciones")
