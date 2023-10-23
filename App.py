@@ -15,6 +15,24 @@ df = cargar_dataset()
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
              unsafe_allow_html=True)
 
+# Crear dos columnas para los checkboxes
+col1, col2 = st.columns(2)
+
+# Opciones para aceptar o denegar
+aceptar = col1.checkbox("Acepto los términos y condiciones")
+denegar = col2.checkbox("Deniego los términos y condiciones")
+
+# Mensaje de confirmación o denegación
+# Mensaje de confirmación o denegación
+if aceptar:
+    st.success("¡Has aceptado los términos y condiciones!")
+else:
+    st.warning("Debes aceptar los términos y condiciones para continuar.")
+
+# Resto de la aplicación
+if aceptar:
+    # Aquí puedes continuar con el resto de tu aplicación si el usuario acepta
+    pass
 
 # Crear una barra lateral para la tabla de contenidos
 st.sidebar.title('Tabla de Contenido')
@@ -22,6 +40,7 @@ selected_option = st.sidebar.selectbox(
     'Selecciona una opción:',
     ['Inicio', 'Búsqueda por Nombre de Receta','Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
 )
+
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
@@ -41,24 +60,6 @@ if selected_option == 'Inicio':
         contenido = file.read()
     st.write(contenido)
 
-    # Crear dos columnas para los checkboxes
-    col1, col2 = st.columns(2)
-
-    # Opciones para aceptar o denegar
-    aceptar = col1.checkbox("Acepto los términos y condiciones")
-    denegar = col2.checkbox("Deniego los términos y condiciones")
-
-    # Mensaje de confirmación o denegación
-    # Mensaje de confirmación o denegación
-    if aceptar:
-        st.success("¡Has aceptado los términos y condiciones!")
-    else:
-        st.warning("Debes aceptar los términos y condiciones para continuar.")
-
-    # Resto de la aplicación
-    if aceptar:
-        # Aquí puedes continuar con el resto de tu aplicación si el usuario acepta
-        pass
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda por Nombre de Receta':
