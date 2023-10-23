@@ -60,7 +60,6 @@ if selected_option == 'Inicio':
         # Aquí puedes continuar con el resto de tu aplicación si el usuario acepta
         pass
 
-
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda por Nombre de Receta':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
