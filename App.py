@@ -33,8 +33,8 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown('<h2 style="text-align: center; color: white;"\
-        ">Política de Tratamiento de Datos Personales</h2>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: left; color: white;"\
+        ">Política de Tratamiento de Datos Personales</h3>', unsafe_allow_html=True)
     # Ruta al archivo de texto
     archivo_txt = "Politica_tratamiento_de_datos.txt"
 
@@ -43,7 +43,7 @@ if selected_option == 'Inicio':
         contenido = file.read()
 
     # Muestra el contenido del archivo en la aplicación de Streamlit
-    st.text(contenido)
+    st.write(contenido)
 
 
 
@@ -51,6 +51,9 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda de Recetas por Ingrediente</h3>',\
                       unsafe_allow_html=True)
+
+
+                ##############################################################################################
     
     ingrediente = st.text_input('Ingresa un ingrediente:')
     if ingrediente:
@@ -63,16 +66,80 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             for idx, row in df_ingredientes.iterrows():
                 st.write(row['título'])
 
+                #MODIFICACIÓN DE PAGINACIÓN
+        #----------------------------------------------------------------
+
+        # Páginas de recetas
+        recetas_por_pagina = 10  # Cantidad de recetas por página
+        pagina = st.number_input('Página', min_value=1, value=1)
+
+        if not df_ingredientes.empty:
+            # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
+            recetas_filtradas = []
+            for idx, row in df_ingredientes.iterrows():
+                mostrar_receta = True
+
+        # Calcular los índices de inicio y fin para la página actual
+        inicio = (pagina - 1) * recetas_por_pagina
+        fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
+
+        #############################################################################
+
+
+        if recetas_filtradas:
+            st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
+            for idx in range(inicio, fin):
+                row = recetas_filtradas[idx]
+
+
+                titulo = row['título']
+
+                # Mostrar la receta si no se excluye
+                st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">{titulo}</h4>',\
+                      unsafe_allow_html=True)
+
+                # Agregar una sección de detalles emergente
+                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+
+                    # Impresion de ingredientes
+                    ingredientes = row['Ingredientes'].split('&')
+
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Ingredientes:</h5>',\
+                      unsafe_allow_html=True)
+
+                    for i in range(len(ingredientes)):
+                        st.write(i+1 , ingredientes[i] )
+
+                    # Impresion de preparación
+                    preparacion = row['Direcciones'].split('&')
+
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Preparación paso a paso:</h5>',\
+                      unsafe_allow_html=True)
+
+                    for i in range(len(preparacion)):
+                        st.write(i+1 , preparacion[i] )
+
+
+
+        ############################################################################3
+
+           
+
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
                       unsafe_allow_html=True)
    
-    # Definir el ingrediente "azúcar" para buscar en las recetas
-    ingrediente_azucar = "azúcar"
+
 
     # Cuadro de entrada para ingredientes a excluir
     ingredientes_a_excluir = st.text_input('Ingresa ingredientes a excluir (separados por comas):')
+
+    # Definir el ingrediente "azúcar" para buscar en las recetas
+    ingrediente_azucar = "azúcar"
 
     # Opción para excluir recetas con azúcar
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
@@ -111,7 +178,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
         #FILTRO VEGETARIANO
         #----------------------------------------------------------------
             # Verificar si se debe excluir la receta debido a ingredientes no vegetarianos
-            if excluir_no_vegetarianas and ingredientes_no_vegetarianos[0] in row['NER'] and ingredientes_no_vegetarianos[1] in row['NER'] and ingredientes_no_vegetarianos[2] in row['NER']:
+            if excluir_no_vegetarianas and ((ingredientes_no_vegetarianos[0] or ingredientes_no_vegetarianos[1] or ingredientes_no_vegetarianos[2]) in row['NER']):
                 mostrar_receta = False
         #----------------------------------------------------------------
 
@@ -127,11 +194,35 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
+
+
+                titulo = row['título']
+
                 # Mostrar la receta si no se excluye
-                receta = st.button(row['título'])
+                st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">{titulo}</h4>',\
+                      unsafe_allow_html=True)
+
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
-                    for i in row['Direcciones']:
-                        for j in i:
-                            st.write(j)
+
+                    # Impresion de ingredientes
+                    ingredientes = row['Ingredientes'].split('&')
+
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Ingredientes:</h5>',\
+                      unsafe_allow_html=True)
+
+                    for i in range(len(ingredientes)):
+                        st.write(i+1 , ingredientes[i] )
+
+                    # Impresion de preparación
+                    preparacion = row['Direcciones'].split('&')
+
+                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                " font-style: italic;">Preparación paso a paso:</h5>',\
+                      unsafe_allow_html=True)
+
+                    for i in range(len(preparacion)):
+                        st.write(i+1 , preparacion[i] )
     # ----------------------------------------------------------------
