@@ -247,6 +247,8 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
 
                     # Aquí colocamos la tabla del valor nutricional de los ingredientes
                     st.write(tabla_valor_nutricional)
+        else:
+            pass
            
 # Sección Búsqueda de Recetas por Filtrado
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
