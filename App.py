@@ -180,12 +180,14 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             for idx, row in df_ingredientes.iterrows():
                 #mostrar_receta = True
                 recetas_filtradas.append(row)
+
+            # Calcular los índices de inicio y fin para la página actual
+            inicio = (pagina - 1) * recetas_por_pagina
+            fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
+        
         else:
             st.write("No se encontraron resultados.")
 
-        # Calcular los índices de inicio y fin para la página actual
-        inicio = (pagina - 1) * recetas_por_pagina
-        fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
 
         if recetas_filtradas:
             st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
