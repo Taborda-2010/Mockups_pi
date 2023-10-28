@@ -158,7 +158,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
 
-                titulo = row['titulo']
+                titulo = row['Título']
 
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
