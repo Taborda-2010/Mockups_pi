@@ -17,7 +17,7 @@ def cargar_dataset_nutricion():
     de los valores nutricionales de los
     ingredientes
     """
-    nutr_df = pd.read_csv('db_nutricion.csv')
+    nutr_df = pd.read_csv('db_nutricion.csv', encoding="ISO-8859-1")
     return nutr_df
 
 # Cargar datset de datos nutricionales
