@@ -5,7 +5,7 @@ import streamlit as st  # Versión: 1.27.2
 def cargar_dataset():
     '''Función para importar la base de datos
     de las 250 recetas'''
-    df = pd.read_csv('db_reducida_spanish.csv')
+    df = pd.read_csv('db_es.csv')
     return df
 
 # Cargar el conjunto de datos
@@ -69,7 +69,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
     nombre = st.text_input('Ingresa el nombre:')
     if nombre:
         # Filtrar el DataFrame por ingredientes
-        df_titulo = df[df['título'].str.contains(nombre, case=False, na=False)]
+        df_titulo = df[df['Título'].str.contains(nombre, case=False, na=False)]
         
          # Páginas de recetas
         recetas_por_pagina = 10  # Cantidad de recetas por página
@@ -94,7 +94,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
 
-                titulo = row['título']
+                titulo = row['Título']
 
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
@@ -102,7 +102,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                       unsafe_allow_html=True)
 
                 # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+                with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
 
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
@@ -115,7 +115,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                         st.write(i+1 , ingredientes[i] )
 
                     # Impresion de preparación
-                    preparacion = row['Direcciones'].split('&')
+                    preparacion = row['Preparacion'].split('&')
 
                     st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
                 " font-style: italic;">Preparación paso a paso:</h5>',\
@@ -133,7 +133,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
     ingrediente = st.text_input('Ingresa un ingrediente:')
     if ingrediente:
         # Filtrar el DataFrame por ingredientes
-        df_ingredientes = df[df['NER'].str.contains(ingrediente, case=False, na=False)]
+        df_ingredientes = df[df['Ingredientes'].str.contains(ingrediente, case=False, na=False)]
         
          # Páginas de recetas
         recetas_por_pagina = 10  # Cantidad de recetas por página
@@ -158,7 +158,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
 
-                titulo = row['título']
+                titulo = row['Título']
 
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
@@ -166,7 +166,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                       unsafe_allow_html=True)
 
                 # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+                with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
 
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
@@ -179,7 +179,7 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                         st.write(i+1 , ingredientes[i] )
 
                     # Impresion de preparación
-                    preparacion = row['Direcciones'].split('&')
+                    preparacion = row['Preparacion'].split('&')
 
                     st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
                 " font-style: italic;">Preparación paso a paso:</h5>',\
@@ -224,7 +224,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             if ingredientes_a_excluir:
                 ingredientes_excluidos = [ingrediente.strip() for ingrediente in ingredientes_a_excluir.split(',')]
                 for ingrediente in ingredientes_excluidos:
-                    if ingrediente in row['Ingredientes']:
+                    if ingrediente in row['ingredientes']:
                         mostrar_receta = False
 
             # Verificar si se debe excluir la receta debido al azúcar
@@ -248,7 +248,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
             for idx in range(inicio, fin):
                 row = recetas_filtradas[idx]
 
-                titulo = row['título']
+                titulo = row['Título']
 
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
@@ -256,7 +256,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                       unsafe_allow_html=True)
 
                 # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["título"]}', expanded=False):
+                with st.expander(f'Detalles de la receta: {row["titulo"]}', expanded=False):
 
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
@@ -269,7 +269,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                         st.write(i+1 , ingredientes[i] )
 
                     # Impresion de preparación
-                    preparacion = row['Direcciones'].split('&')
+                    preparacion = row['Preparacion'].split('&')
 
                     st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
                 " font-style: italic;">Preparación paso a paso:</h5>',\
