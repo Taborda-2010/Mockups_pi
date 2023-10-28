@@ -8,6 +8,23 @@ def cargar_dataset():
     df = pd.read_csv('db_es.csv')
     return df
 
+# NUEVO CÓDIGO
+# INICIO ----------------------------------------------------------------
+
+def cargar_dataset_nutricion():
+    """
+    Función para importar la base de datos
+    de los valores nutricionales de los
+    ingredientes
+    """
+    nutr_df = pd.read_csv('db_nutricion.csv')
+    return nutr_df
+
+# Cargar datset de datos nutricionales
+nutr_df = cargar_dataset_nutricion()
+
+# FIN ----------------------------------------------------------------
+
 # Cargar el conjunto de datos
 df = cargar_dataset()
 
@@ -22,6 +39,19 @@ selected_option = st.sidebar.selectbox(
     ['Inicio', 'Búsqueda por Nombre de Receta','Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
 )
 
+# VALOR NUTRICIONAL
+# INICIO --------------------------------
+# Crear nueva columna con los valores separados por & para que sea una lista
+df['NER_separados'] = df['NER'].str.split('&')
+
+# Realizar unión basada en la coincidencia de ingredientes
+valor_nutricional = df.explode('NER_separados').merge(
+    nutr_df.explode('name'),
+    left_on = 'NER_separados',
+    right_on = 'name',
+    how = 'left'
+)
+# FIN ----------------------------------------------------------------
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
