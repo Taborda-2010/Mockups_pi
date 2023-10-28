@@ -256,7 +256,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                       unsafe_allow_html=True)
 
                 # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["titulo"]}', expanded=False):
+                with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
 
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
