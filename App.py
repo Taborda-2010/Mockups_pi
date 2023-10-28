@@ -43,6 +43,7 @@ selected_option = st.sidebar.selectbox(
 # INICIO --------------------------------
 # Crear nueva columna con los valores separados por & para que sea una lista
 df['NER_separados'] = df['NER'].str.split('&')
+nutr_df['name'] = nutr_df['name'].str.split('&')
 
 # Realizar unión basada en la coincidencia de ingredientes
 valor_nutricional = df.explode('NER_separados').merge(
