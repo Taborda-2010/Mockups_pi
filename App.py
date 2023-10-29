@@ -64,7 +64,7 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown('<h3 style="text-align: left; color: white;"\
+    st.markdown('<h3 style="text-align: left; color: skyblue;"\
         ">Política de Tratamiento de Datos Personales</h3>', unsafe_allow_html=True)
     
     # Ruta al archivo de texto
