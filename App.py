@@ -8,6 +8,23 @@ def cargar_dataset():
     df = pd.read_csv('db_es.csv')
     return df
 
+# NUEVO CÓDIGO
+# INICIO ----------------------------------------------------------------
+
+def cargar_dataset_nutricion():
+    """
+    Función para importar la base de datos
+    de los valores nutricionales de los
+    ingredientes
+    """
+    nutr_df = pd.read_csv('db_nutricion.csv', encoding="ISO-8859-1")
+    return nutr_df
+
+# Cargar datset de datos nutricionales
+nutr_df = cargar_dataset_nutricion()
+
+# FIN ----------------------------------------------------------------
+
 # Cargar el conjunto de datos
 df = cargar_dataset()
 
@@ -21,6 +38,21 @@ selected_option = st.sidebar.selectbox(
     'Selecciona una opción:',
     ['Inicio', 'Búsqueda por Nombre de Receta','Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
 )
+
+# VALOR NUTRICIONAL
+# INICIO --------------------------------
+# Crear nueva columna con los valores separados por & para que sea una lista
+df['NER_separados'] = df['NER'].str.split('&')
+nutr_df['name'] = nutr_df['name'].str.split('&')
+
+# Realizar unión basada en la coincidencia de ingredientes
+valor_nutricional = df.explode('NER_separados').merge(
+    nutr_df.explode('name'),
+    left_on = 'NER_separados',
+    right_on = 'name',
+    how = 'left'
+)
+# FIN ----------------------------------------------------------------
 
 
 # Interfaz de usuario
@@ -149,44 +181,72 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                 #mostrar_receta = True
                 recetas_filtradas.append(row)
 
-        # Calcular los índices de inicio y fin para la página actual
-        inicio = (pagina - 1) * recetas_por_pagina
-        fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
+            # Calcular los índices de inicio y fin para la página actual
+            inicio = (pagina - 1) * recetas_por_pagina
+            fin = min(inicio + recetas_por_pagina, len(recetas_filtradas))
 
-        if recetas_filtradas:
-            st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
-            for idx in range(inicio, fin):
-                row = recetas_filtradas[idx]
+            if recetas_filtradas:
+                st.write(f"Mostrando recetas {inicio + 1} - {fin} de {len(recetas_filtradas)}")
+                for idx in range(inicio, fin):
 
-                titulo = row['Título']
+                    # 'row' es la variable que guarda la receta actual
+                    row = recetas_filtradas[idx]
 
-                # Mostrar la receta si no se excluye
-                st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
-                " font-style: italic;">{titulo}</h4>',\
-                      unsafe_allow_html=True)
+                    titulo = row['Título']
 
-                # Agregar una sección de detalles emergente
-                with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
+                    # NUEVA VARIABLE PARA VALOR NUTRICIONAL
+                    ingredientes_receta = row['NER'].split('&')
 
-                    # Impresion de ingredientes
-                    ingredientes = row['Ingredientes'].split('&')
+                    # Mostrar la receta si no se excluye
+                    st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
+                    " font-style: italic;">{titulo}</h4>',\
+                        unsafe_allow_html=True)
+                    
+                    # INICIO ----------------------------------------------------------------
 
-                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
-                " font-style: italic;">Ingredientes:</h5>',\
-                      unsafe_allow_html=True)
+                    # Lista para almacenar el valor nutricional de cada ingrediente
+                    nutricional = []
 
-                    for i in range(len(ingredientes)):
-                        st.write(i+1 , ingredientes[i] )
+                    for ingrediente in ingredientes_receta:
+                        info_nutricional = valor_nutricional[valor_nutricional['name'] == ingrediente]
+                        calorias = info_nutricional['calories'].values[0] if not info_nutricional.empty else "No encontrado"
 
-                    # Impresion de preparación
-                    preparacion = row['Preparacion'].split('&')
+                        nutricional.append({'Ingrediente' : ingrediente, 'Calorías' : calorias})
 
-                    st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
-                " font-style: italic;">Preparación paso a paso:</h5>',\
-                      unsafe_allow_html=True)
+                    # convirtiendo lista en un dataframe para mostrarlo como tabla
+                    tabla_valor_nutricional = pd.DataFrame(nutricional)
 
-                    for i in range(len(preparacion)):
-                        st.write(i+1 , preparacion[i] )
+                    # FIN ----------------------------------------------------------------
+
+                    # Agregar una sección de detalles emergente
+                    with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
+
+                        # Impresion de ingredientes
+                        ingredientes = row['Ingredientes'].split('&')
+
+                        st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                    " font-style: italic;">Ingredientes:</h5>',\
+                        unsafe_allow_html=True)
+
+                        for i in range(len(ingredientes)):
+                            st.write(i+1 , ingredientes[i] )
+
+                        # Impresion de preparación
+                        preparacion = row['Preparacion'].split('&')
+
+                        st.markdown(f'<h5 id="filtrado" style="text-align: left; color: skyblue;"\
+                    " font-style: italic;">Preparación paso a paso:</h5>',\
+                        unsafe_allow_html=True)
+
+                        for i in range(len(preparacion)):
+                            st.write(i+1 , preparacion[i] )
+
+                        # Aquí colocamos la tabla del valor nutricional de los ingredientes
+                        st.write(tabla_valor_nutricional)        
+        else:
+            st.write("No se encontraron resultados.")
+
+
            
 # Sección Búsqueda de Recetas por Filtrado
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
