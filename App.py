@@ -48,7 +48,7 @@ def promedio(receta_nombre, nueva_calificacion):
         else:
 
             calificaciones_validas = sum(busqueda["Calificación"])
-            promedio_calificaciones = calificaciones_validas / len(calificaciones_validas)
+            promedio_calificaciones = calificaciones_validas / calificaciones_validas
             return promedio_calificaciones
             
     except Exception as e:
