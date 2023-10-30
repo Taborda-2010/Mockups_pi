@@ -65,7 +65,7 @@ def promedio(receta_nombre, nueva_calificacion):
         if not calificaciones:
             agregar_calificacion(receta_nombre, nueva_calificacion)
             nueva_calificacion = round(nueva_calificacion,2)
-            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {nueva_calificacion} '
+            imp = f'Tu calificación es {nueva_calificacion} y nuevaa {nueva_calificacion} '
             st.success(imp)
         else:
             # Calcular el promedio solo con las calificaciones de la receta específica
@@ -100,12 +100,6 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     except Exception as e:
         st.warning(f"Error en la función agregar_calificacion: {e}")
     
-
-
-
-# Ejemplo de cómo agregar una calificación
-
-
 
 
 
