@@ -179,21 +179,13 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
-
-
                     # Impresion de Calificación
                     #####################################
 
                     # Consultar la calificación promedio de una receta
                     receta_consultada = row["Título"]
-
-                    
-                  
-                    
-
+       
                     #####################################
-
-
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
 
@@ -222,7 +214,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     if calificacion:
                         agregar_calificacion(row['Título'], calificacion)
 
-                        titulo = row['Titulo']
+                        
 
                         prom = promedio(titulo)
                         
