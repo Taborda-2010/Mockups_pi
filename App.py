@@ -49,7 +49,8 @@ def promedio(receta_nombre, nueva_calificacion):
 
             calificaciones_validas = sum(busqueda["Calificación"])
             promedio_calificaciones = calificaciones_validas / calificaciones_validas
-            return promedio_calificaciones
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones} '
+            st.success(imp)
             
     except Exception as e:
         st.warning(f"Error en la función promedio: {e}")
@@ -229,8 +230,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                         
                         
-                        imp = f'Tu calificación es {calificacion} y el promedio de calificación de esta receta es {prom} '
-                        st.success(imp)
+                        
 
                     
                     #####################################
