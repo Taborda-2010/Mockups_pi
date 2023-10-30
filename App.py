@@ -37,23 +37,31 @@ nutr_df = cargar_dataset_nutricion()
 cf = TinyDB('cf.json')
 
 
-
-def promedio(receta_nombre,nueva_calificacion):
-    receta = Query()
-
-    if cf.search(receta.Título == receta_nombre):
-        resultado = cf.search(receta.Título == receta_nombre)
-        if resultado:
-            calificaciones = [entry['Calificación'] for entry in resultado]
-            prom = sum(calificaciones) / len(calificaciones)
-            return prom
-        else:
-            return None
-    else:
-        agregar_calificacion(receta_nombre,nueva_calificacion)
-        promedio(receta_nombre,nueva_calificacion)
             
+def promedio(receta_nombre, nueva_calificacion):
+    try:
+        receta = Query()
+        busqueda = db.search(receta.receta == receta_nombre)
 
+        if not busqueda:
+            agregar_calificacion(receta_nombre, nueva_calificacion)
+            promedio(receta_nombre, nueva_calificacion)
+        else:
+            # Extraer las calificaciones de la búsqueda
+            calificaciones = [item['Calificación'] for item in busqueda]
+
+            # Filtrar calificaciones válidas (números)
+            calificaciones_validas = [float(cal) for cal in calificaciones if cal.replace(".", "", 1).isdigit()]
+
+            # Verificar si hay calificaciones antes de calcular el promedio
+            if calificaciones_validas:
+                promedio_calificaciones = sum(calificaciones_validas) / len(calificaciones_validas)
+                return promedio_calificaciones
+            else:
+                return None  # No hay calificaciones válidas para calcular el promedio
+    except Exception as e:
+        st.warning(f"Error en la función promedio: {e}")
+        return None
 
 def agregar_calificacion(receta_nombre, nueva_calificacion):
     #tabla = tabla_recetas
