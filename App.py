@@ -60,7 +60,7 @@ def promedio(receta_nombre, nueva_calificacion):
     try:
         receta = Query()
         # Filtrar busqueda por el título de la receta
-        calificaciones = [item['Calificación'] for item in cf.search(receta.Título == receta_nombre) if isinstance(item['Calificación'], (int, float))]
+        calificaciones = [item['Título'] for item in cf.search(receta.Título == receta_nombre) if isinstance(item['Calificación'], (int, float))]
 
         if not calificaciones:
             agregar_calificacion(receta_nombre, nueva_calificacion)
