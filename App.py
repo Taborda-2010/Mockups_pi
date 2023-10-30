@@ -45,6 +45,8 @@ def promedio(receta_nombre, nueva_calificacion):
 
         if not busqueda:
             agregar_calificacion(receta_nombre, nueva_calificacion)
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {nueva_calificacion} '
+            st.success(imp)
         else:
 
             calificaciones_validas = sum(busqueda["Calificación"])
@@ -61,7 +63,6 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
         receta = Query()
         # Asegúrate de que el campo 'Título' sea el correcto en tu base de datos
         cf.insert({"Título": receta_nombre, "Calificación": nueva_calificacion})
-        promedio(receta_nombre, nueva_calificacion)
     except Exception as e:
         st.warning(f"Error en la función agregar_calificacion: {e}")
     
@@ -225,6 +226,8 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
 
                         agregar_calificacion(titulo, calificacion)
+                        promedio(titulo, calificacion)
+
 
                         
 
