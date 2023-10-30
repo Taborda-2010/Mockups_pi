@@ -190,7 +190,8 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     # Consultar la calificación promedio de una receta
                     receta_consultada = row["Título"]
-                    resultado = tabla_recetas.get(receta.Nombre == receta_consultada)
+                    resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
+
                     if resultado:
                         calificacion_promedio = resultado['CalificacionPromedio']
                         imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
