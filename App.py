@@ -218,7 +218,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     if calificacion:
                         agregar_calificacion(row['Título'], calificacion)
 
-                        
+                        titulo = str(row['Título'])
 
                         prom = promedio(titulo,calificacion)
                         
