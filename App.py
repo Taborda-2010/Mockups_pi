@@ -45,12 +45,12 @@ def promedio(receta_nombre, nueva_calificacion):
 
         if not busqueda:
             agregar_calificacion(receta_nombre, nueva_calificacion)
-            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {nueva_calificacion} '
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de  es {nueva_calificacion} '
             st.success(imp)
         else:
 
             calificaciones_validas = sum(busqueda["Calificación"])
-            promedio_calificaciones = calificaciones_validas / calificaciones_validas
+            promedio_calificaciones = calificaciones_validas / len(busqueda["Calificación"])
             imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones} '
             st.success(imp)
             
