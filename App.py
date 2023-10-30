@@ -217,7 +217,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     #Nueva calificación
                     #####################################
-                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
+                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:",min_value=1,max_value=5,step=1)
 
                     if calificacion:
                         titulo = str(row['Título'])
