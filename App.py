@@ -1,8 +1,12 @@
 # Se importan las libreías necesarias
+
+# Versión Pandas: 2.1.1
 import pandas as pd  
-# Versión: 2.1.1
-import streamlit as st  
+
 # Versión: 1.27.2
+import streamlit as st  
+
+
 from tinydb import TinyDB, Query
 
 
@@ -207,10 +211,27 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                 titulo = row['Título']
 
+                # NUEVA VARIABLE PARA VALOR NUTRICIONAL
+                ingredientes_receta = row['NER'].split('&')
+
+
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
                 " font-style: italic;">{titulo}</h4>',\
                       unsafe_allow_html=True)
+                
+                # Lista para almacenar el valor nutricional de cada ingrediente
+                nutricional = []
+
+                for ingrediente in ingredientes_receta:
+                    info_nutricional = valor_nutricional[valor_nutricional['name'] == ingrediente]
+                    calorias = info_nutricional['calories'].values[0] if not info_nutricional.empty else "No encontrado"
+
+                    nutricional.append({'Ingrediente' : ingrediente, 'Calorías' : calorias})
+
+                # convirtiendo lista en un dataframe para mostrarlo como tabla
+                tabla_valor_nutricional = pd.DataFrame(nutricional)
+
 
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
@@ -235,6 +256,8 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
 
+                    # Aquí colocamos la tabla del valor nutricional de los ingredientes
+                    st.write(tabla_valor_nutricional) 
 
                     #calificación
                     #####################################
@@ -416,10 +439,26 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
                 titulo = row['Título']
 
+                # NUEVA VARIABLE PARA VALOR NUTRICIONAL
+                ingredientes_receta = row['NER'].split('&')
+
                 # Mostrar la receta si no se excluye
                 st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
                 " font-style: italic;">{titulo}</h4>',\
                       unsafe_allow_html=True)
+                
+                # Lista para almacenar el valor nutricional de cada ingrediente
+                nutricional = []
+
+                for ingrediente in ingredientes_receta:
+                    info_nutricional = valor_nutricional[valor_nutricional['name'] == ingrediente]
+                    calorias = info_nutricional['calories'].values[0] if not info_nutricional.empty else "No encontrado"
+
+                    nutricional.append({'Ingrediente' : ingrediente, 'Calorías' : calorias})
+
+                # convirtiendo lista en un dataframe para mostrarlo como tabla
+                tabla_valor_nutricional = pd.DataFrame(nutricional)
+
 
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
@@ -443,6 +482,9 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
+
+                    # Aquí colocamos la tabla del valor nutricional de los ingredientes
+                    st.write(tabla_valor_nutricional) 
 
 
                     #calificación
