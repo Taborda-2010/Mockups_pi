@@ -48,7 +48,7 @@ def promedio(receta_nombre, nueva_calificacion):
             promedio(receta_nombre, nueva_calificacion)
         else:
             # Extraer las calificaciones de la búsqueda
-            calificaciones = [item['Calificación'] for item in busqueda]
+            calificaciones = [item["Calificación"] for item in busqueda]
 
             # Filtrar calificaciones válidas (números)
             calificaciones_validas = [float(cal) for cal in calificaciones if cal.replace(".", "", 1).isdigit()]
@@ -67,7 +67,7 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     try:
         receta = Query()
         # Asegúrate de que el campo 'Título' sea el correcto en tu base de datos
-        cf.insert({'Título': receta_nombre, 'Calificación': nueva_calificacion})
+        cf.insert({"Título": receta_nombre, "Calificación": nueva_calificacion})
     except Exception as e:
         st.warning(f"Error en la función agregar_calificacion: {e}")
     
