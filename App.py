@@ -59,7 +59,7 @@ def promedio(receta_nombre, nueva_calificacion):
     """
     try:
         receta = Query()
-        busqueda = cf.search(receta.Título == receta_nombre)
+        busqueda = cf.search(receta.receta_nombre == receta_nombre)
 
         if not busqueda:
             agregar_calificacion(receta_nombre, nueva_calificacion)
