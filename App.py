@@ -37,18 +37,27 @@ nutr_df = cargar_dataset_nutricion()
 db = TinyDB('db_es.json')
 
 # Crea una tabla en la base de datos de TinyDB
-tabla_recetas = db.table('recetas')
+#tabla_recetas = db.table('recetas')
 
+def promedio(receta_nombre):
+    resultado = db.search(receta.Nombre == receta_nombre)
+    if resultado:
+        calificaciones = [entry['Calificación'] for entry in resultado]
+        promedio = sum(calificaciones) / len(calificaciones)
+        return promedio
+    else:
+        return None
 
 
 
 def agregar_calificacion(receta_nombre, nueva_calificacion):
-    tabla = tabla_recetas
+    #tabla = tabla_recetas
     receta = Query()
     
-    resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
+    db.insert({'Nombre': receta_nombre,'Calificación':nueva_calificacion})
+    #resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
     
-    if resultado:
+    '''if resultado:
         # Ya hay calificaciones para esta receta
         calificaciones_anteriores = resultado['Calificaciones']
         calificaciones_anteriores.append(nueva_calificacion)
@@ -66,7 +75,7 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     else:
         # No hay calificaciones anteriores, crea una nueva entrada
         tabla.insert({'Nombre': receta_nombre, 'Calificaciones': [nueva_calificacion], 'CalificacionPromedio': nueva_calificacion})
-
+'''
 
 
 
@@ -197,20 +206,17 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     # Consultar la calificación promedio de una receta
                     receta_consultada = row["Título"]
 
-                    try:
-                        resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
-                        if resultado:
-                            calificacion_promedio = resultado.get('CalificacionPromedio')
-                            imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
-                            st.write(imp)
-                        else:
-                            imp = f'La receta {receta_consultada} no fue encontrada en la base de datos.'
-                            st.write(imp)
-                        
-                    except Exception as e:
-                        imp = f'Error al consultar la receta: {e}'
+                    
+                    '''resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
+                    if resultado:
+                        calificacion_promedio = resultado.get('CalificacionPromedio')
+                        imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
                         st.write(imp)
+                    else:
+                        imp = f'La receta {receta_consultada} no fue encontrada en la base de datos.'
+                        st.write(imp)'''
                         
+                    
 
                     #####################################
 
@@ -242,6 +248,11 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     if calificacion:
                         agregar_calificacion(row['Título'], calificacion)
+
+                        prom = promedio(row['Titulo'])
+                        
+                        imp = f'Tu calificación es {calificacion} y el promedio de calificación de esta receta es {prom} '
+                        st.success(imp)
 
                     
                     #####################################
