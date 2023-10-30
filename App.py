@@ -45,8 +45,8 @@ def promedio(receta_nombre,nueva_calificacion):
         resultado = cf.search(receta.Título == receta_nombre)
         if resultado:
             calificaciones = [entry['Calificación'] for entry in resultado]
-            promedio = sum(calificaciones) / len(calificaciones)
-            return promedio
+            prom = sum(calificaciones) / len(calificaciones)
+            return prom
         else:
             return None
     else:
