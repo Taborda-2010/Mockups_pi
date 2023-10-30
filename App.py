@@ -46,18 +46,11 @@ def promedio(receta_nombre, nueva_calificacion):
         if not busqueda:
             agregar_calificacion(receta_nombre, nueva_calificacion)
         else:
-            # Extraer las calificaciones de la búsqueda
-            calificaciones = [item["Calificación"] for item in busqueda]
 
-            # Filtrar calificaciones válidas (números)
-            calificaciones_validas = [float(cal) for cal in calificaciones if cal.replace(".", "", 1).isdigit()]
-
-            # Verificar si hay calificaciones antes de calcular el promedio
-            if calificaciones_validas:
-                promedio_calificaciones = sum(calificaciones_validas) / len(calificaciones_validas)
-                return promedio_calificaciones
-            else:
-                return None  # No hay calificaciones válidas para calcular el promedio
+            calificaciones_validas = sum(busqueda["Calificación"])
+            promedio_calificaciones = calificaciones_validas / len(calificaciones_validas)
+            return promedio_calificaciones
+            
     except Exception as e:
         st.warning(f"Error en la función promedio: {e}")
         return None
