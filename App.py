@@ -71,8 +71,6 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
 
 
 # Ejemplo de cómo agregar una calificación
-agregar_calificacion('Pastel de fresas frescas', 4.5)
-agregar_calificacion('Pastel de fresas frescas', 3.7)
 
 
 
@@ -215,18 +213,6 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                         
 
                     #####################################
-
-
-                    try:
-                        resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
-                        if resultado:
-                            calificacion_promedio = resultado.get('CalificacionPromedio')
-                            print(f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}')
-                        else:
-                            print(f'La receta {receta_consultada} no fue encontrada en la base de datos.')
-                    except Exception as e:
-                        print(f'Error al consultar la receta: {e}')
-
 
 
                     # Impresion de ingredientes
