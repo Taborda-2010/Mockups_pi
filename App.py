@@ -67,6 +67,9 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
 
 # Ejemplo de cómo agregar una calificación
 agregar_calificacion('Pastel de fresas frescas', 4.5)
+agregar_calificacion('Pastel de fresas frescas', 3.7)
+
+
 
 
 
