@@ -44,7 +44,8 @@ def promedio(receta_nombre, nueva_calificacion):
         busqueda = cf.search(receta.receta_nombre == receta_nombre)
 
         if not busqueda:
-            st.warning(f"ojoooo")
+            agregar_calificacion(receta_nombre, nueva_calificacion)
+            promedio(receta_nombre, nueva_calificacion)
         else:
             # Extraer las calificaciones de la búsqueda
             calificaciones = [item['Calificación'] for item in busqueda]
