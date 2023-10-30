@@ -190,18 +190,29 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     # Consultar la calificación promedio de una receta
                     receta_consultada = row["Título"]
-                    resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
 
-                    if resultado:
-                        calificacion_promedio = resultado['CalificacionPromedio']
-                        imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
-                        st.write(imp)
-                    else:
-                        imp = f'La receta {receta_consultada} aún no ha sido calificada.'
-                        st.write(imp)
+                    try:
+                        resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
+                        if resultado:
+                            calificacion_promedio = resultado.get('CalificacionPromedio')
+                            print(f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}')
+                        else:
+                            print(f'La receta {receta_consultada} no fue encontrada en la base de datos.')
+                    except Exception as e:
+                        print(f'Error al consultar la receta: {e}')
+
                     #####################################
 
 
+                    try:
+                        resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
+                        if resultado:
+                            calificacion_promedio = resultado.get('CalificacionPromedio')
+                            print(f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}')
+                        else:
+                            print(f'La receta {receta_consultada} no fue encontrada en la base de datos.')
+                    except Exception as e:
+                        print(f'Error al consultar la receta: {e}')
 
 
 
@@ -228,7 +239,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     #Nueva calificación
                     #####################################
-                    calificacion = st.text_input("¿Cuanto le pones a esta receta del 1 al 10?:")
+                    calificacion = st.text_input("¿Cuanto le pones a esta receta del 1 al 5?:")
                     receta_nombre = row["Título"]
 
                     if calificacion:
