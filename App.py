@@ -67,7 +67,6 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
         receta = Query()
         # Asegúrate de que el campo 'Título' sea el correcto en tu base de datos
         cf.insert({"Título": receta_nombre, "Calificación": nueva_calificacion})
-        promedio(receta_nombre, nueva_calificacion)
     except Exception as e:
         st.warning(f"Error en la función agregar_calificacion: {e}")
     
