@@ -41,26 +41,23 @@ cf = TinyDB('cf.json')
 def promedio(receta_nombre, nueva_calificacion):
     try:
         receta = Query()
-        busqueda = cf.search(receta.Título == receta_nombre)
+        # Filtrar busqueda por el título de la receta
+        calificaciones = [item['Calificación'] for item in cf.search(receta.Título == receta_nombre) if isinstance(item['Calificación'], (int, float))]
 
-        if not busqueda:
+        if not calificaciones:
             agregar_calificacion(receta_nombre, nueva_calificacion)
-            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación es {nueva_calificacion} '
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de es {nueva_calificacion} '
             st.success(imp)
         else:
-            # Obtener calificaciones válidas como lista de flotantes
-            calificaciones = [item['Calificación'] for item in busqueda if isinstance(item['Calificación'], (int, float))]
+            # Calcular el promedio solo con las calificaciones de la receta específica
+            promedio_calificaciones = sum(calificaciones) / len(calificaciones)
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones} '
+            st.success(imp)
 
-            # Calcular el promedio si hay calificaciones válidas
-            if calificaciones:
-                promedio_calificaciones = sum(calificaciones) / len(calificaciones)
-                imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones} '
-                st.success(imp)
-            else:
-                st.warning("No hay calificaciones válidas para calcular el promedio.")
-            
     except Exception as e:
         st.warning(f"Error en la función promedio: {e}")
+        return None
+
 
 
 def agregar_calificacion(receta_nombre, nueva_calificacion):
