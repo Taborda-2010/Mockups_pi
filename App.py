@@ -56,25 +56,7 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     cf.insert({'Nombre': receta_nombre,'Calificación':nueva_calificacion})
     #resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
     
-    '''if resultado:
-        # Ya hay calificaciones para esta receta
-        calificaciones_anteriores = resultado['Calificaciones']
-        calificaciones_anteriores.append(nueva_calificacion)
-        
-        # Verificar si hay calificaciones anteriores
-        if calificaciones_anteriores:
-            # Calcular el promedio de las calificaciones
-            promedio = sum(calificaciones_anteriores) / len(calificaciones_anteriores)
-        else:
-            # No hay calificaciones anteriores, usar la nueva calificación como promedio
-            promedio = nueva_calificacion
-        
-        # Actualizar el promedio en lugar de sobrescribir
-        tabla.update({'Calificaciones': calificaciones_anteriores, 'CalificacionPromedio': promedio}, receta.Nombre == receta_nombre)
-    else:
-        # No hay calificaciones anteriores, crea una nueva entrada
-        tabla.insert({'Nombre': receta_nombre, 'Calificaciones': [nueva_calificacion], 'CalificacionPromedio': nueva_calificacion})
-'''
+    
 
 
 
@@ -206,15 +188,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     receta_consultada = row["Título"]
 
                     
-                    '''resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
-                    if resultado:
-                        calificacion_promedio = resultado.get('CalificacionPromedio')
-                        imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
-                        st.write(imp)
-                    else:
-                        imp = f'La receta {receta_consultada} no fue encontrada en la base de datos.'
-                        st.write(imp)'''
-                        
+                  
                     
 
                     #####################################
