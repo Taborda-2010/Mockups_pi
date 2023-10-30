@@ -34,13 +34,12 @@ nutr_df = cargar_dataset_nutricion()
 # NUEVO CÓDIGO
 # INICIO -------------------------------------------------------------
 
-db = TinyDB('db_es.json')
+cf = TinyDB('cf.json')
 
-# Crea una tabla en la base de datos de TinyDB
-#tabla_recetas = db.table('recetas')
+
 
 def promedio(receta_nombre):
-    resultado = db.search(receta.Nombre == receta_nombre)
+    resultado = cf.search(receta.Nombre == receta_nombre)
     if resultado:
         calificaciones = [entry['Calificación'] for entry in resultado]
         promedio = sum(calificaciones) / len(calificaciones)
@@ -54,7 +53,7 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     #tabla = tabla_recetas
     receta = Query()
     
-    db.insert({'Nombre': receta_nombre,'Calificación':nueva_calificacion})
+    cf.insert({'Nombre': receta_nombre,'Calificación':nueva_calificacion})
     #resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
     
     '''if resultado:
@@ -257,7 +256,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     
                     #####################################
 
-    db.close()
+    cf.close()
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
