@@ -53,7 +53,7 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     #tabla = tabla_recetas
     receta = Query()
     
-    cf.insert({'Nombre': receta_nombre,'Calificación':nueva_calificacion})
+    cf.insert({'Título': receta_nombre,'Calificación':nueva_calificacion})
     #resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
     
     
