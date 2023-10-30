@@ -46,17 +46,22 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
     tabla = tabla_recetas
     receta = Query()
     
-    resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
+    resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
     
     if resultado:
         # Ya hay calificaciones para esta receta
         calificaciones_anteriores = resultado['Calificaciones']
         calificaciones_anteriores.append(nueva_calificacion)
         
-        # Calcula el promedio de las calificaciones
-        promedio = round(sum(calificaciones_anteriores) / len(calificaciones_anteriores),1)
+        # Verificar si hay calificaciones anteriores
+        if calificaciones_anteriores:
+            # Calcular el promedio de las calificaciones
+            promedio = sum(calificaciones_anteriores) / len(calificaciones_anteriores)
+        else:
+            # No hay calificaciones anteriores, usar la nueva calificación como promedio
+            promedio = nueva_calificacion
         
-        # Actualiza el promedio en lugar de sobrescribir
+        # Actualizar el promedio en lugar de sobrescribir
         tabla.update({'Calificaciones': calificaciones_anteriores, 'CalificacionPromedio': promedio}, receta.Nombre == receta_nombre)
     else:
         # No hay calificaciones anteriores, crea una nueva entrada
