@@ -39,8 +39,10 @@ cf = TinyDB('cf.json')
 
 
 def promedio(receta_nombre,nueva_calificacion):
-    if cf.search(receta.Nombre == receta_nombre):
-        resultado = cf.search(receta.Nombre == receta_nombre)
+    receta = Query()
+
+    if cf.search(receta.Título == receta_nombre):
+        resultado = cf.search(receta.Título == receta_nombre)
         if resultado:
             calificaciones = [entry['Calificación'] for entry in resultado]
             promedio = sum(calificaciones) / len(calificaciones)
