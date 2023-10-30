@@ -195,11 +195,16 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                         resultado = tabla_recetas.get(Query().Nombre == receta_consultada)
                         if resultado:
                             calificacion_promedio = resultado.get('CalificacionPromedio')
-                            print(f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}')
+                            imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
+                            st.write(imp)
                         else:
-                            print(f'La receta {receta_consultada} no fue encontrada en la base de datos.')
+                            imp = f'La receta {receta_consultada} no fue encontrada en la base de datos.'
+                            st.write(imp)
+                        
                     except Exception as e:
-                        print(f'Error al consultar la receta: {e}')
+                        imp = f'Error al consultar la receta: {e}'
+                        st.write(imp)
+                        
 
                     #####################################
 
@@ -245,10 +250,10 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                     if calificacion:
                         agregar_calificacion(receta_nombre, calificacion)
 
-                    db.close()
+                    
                     #####################################
 
-
+    db.close()
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
