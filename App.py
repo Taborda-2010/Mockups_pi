@@ -1,6 +1,10 @@
 # Se importan las libreías necesarias
-import pandas as pd  # Versión: 2.1.1
-import streamlit as st  # Versión: 1.27.2
+import pandas as pd  
+# Versión: 2.1.1
+import streamlit as st  
+# Versión: 1.27.2
+from tinydb import TinyDB, Query
+
 
 def cargar_dataset():
     '''Función para importar la base de datos
@@ -25,8 +29,52 @@ nutr_df = cargar_dataset_nutricion()
 
 # FIN ----------------------------------------------------------------
 
+
+
+# NUEVO CÓDIGO
+# INICIO -------------------------------------------------------------
+
+db = TinyDB('db_es.json')
+
+# Crea una tabla en la base de datos de TinyDB
+tabla_recetas = db.table('recetas')
+
+
+
+
+def agregar_calificacion(receta_nombre, nueva_calificacion):
+    tabla = tabla_recetas
+    receta = Query()
+    
+    resultado = tabla_recetas.get(receta.Nombre == receta_nombre)
+    
+    if resultado:
+        # Ya hay calificaciones para esta receta
+        calificaciones_anteriores = resultado['Calificaciones']
+        calificaciones_anteriores.append(nueva_calificacion)
+        
+        # Calcula el promedio de las calificaciones
+        promedio = sum(calificaciones_anteriores) / len(calificaciones_anteriores)
+        
+        # Actualiza el promedio en lugar de sobrescribir
+        tabla.update({'Calificaciones': calificaciones_anteriores, 'CalificacionPromedio': promedio}, receta.Nombre == receta_nombre)
+    else:
+        # No hay calificaciones anteriores, crea una nueva entrada
+        tabla.insert({'Nombre': receta_nombre, 'Calificaciones': [nueva_calificacion], 'CalificacionPromedio': nueva_calificacion})
+
+
+
+
+# Ejemplo de cómo agregar una calificación
+agregar_calificacion('Pastel de fresas frescas', 4.5)
+
+
+
+# FIN ----------------------------------------------------------------
+
 # Cargar el conjunto de datos
 df = cargar_dataset()
+
 
 # Establecer estilo y formato personalizado
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
@@ -136,6 +184,26 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                 # Agregar una sección de detalles emergente
                 with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
 
+
+                    # Impresion de Calificación
+                    #####################################
+
+                    # Consultar la calificación promedio de una receta
+                    receta_consultada = row["Título"]
+                    resultado = tabla_recetas.get(receta.Nombre == receta_consultada)
+                    if resultado:
+                        calificacion_promedio = resultado['CalificacionPromedio']
+                        imp = f'El promedio de calificaciones de {receta_consultada} es: {calificacion_promedio}'
+                        st.write(imp)
+                    else:
+                        imp = f'La receta {receta_consultada} aún no ha sido calificada.'
+                        st.write(imp)
+                    #####################################
+
+
+
+
+
                     # Impresion de ingredientes
                     ingredientes = row['Ingredientes'].split('&')
 
@@ -155,6 +223,20 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
+
+
+                    #Nueva calificación
+                    #####################################
+                    calificacion = st.text_input("¿Cuanto le pones a esta receta del 1 al 10?:")
+                    receta_nombre = row["Título"]
+
+                    if calificacion:
+                        agregar_calificacion(receta_nombre, calificacion)
+
+                    db.close()
+                    #####################################
+
+
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
