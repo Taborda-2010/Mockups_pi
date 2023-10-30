@@ -39,6 +39,24 @@ cf = TinyDB('cf.json')
 
             
 def promedio(receta_nombre, nueva_calificacion):
+    """
+    Calcula el promedio de calificaciones para una receta y agrega una nueva calificación.
+
+    Esta función busca las calificaciones existentes para una receta y calcula el promedio de
+    esas calificaciones. Si no hay calificaciones previas para la receta, agrega la nueva 
+    calificación directamente. Luego, muestra un mensaje con la calificación ingresada y el 
+    promedio actual.
+
+    Parameters:
+    receta_nombre (str): El nombre de la receta para la cual se va a calcular el promedio.
+    nueva_calificacion (float): La nueva calificación a agregar (de 1 a 5).
+
+    Returns:
+    float: El promedio actual de calificaciones para la receta.
+
+    Raises:
+    Exception: Si ocurre un error durante la ejecución.
+    """
     try:
         receta = Query()
         # Filtrar busqueda por el título de la receta
@@ -46,11 +64,12 @@ def promedio(receta_nombre, nueva_calificacion):
 
         if not calificaciones:
             agregar_calificacion(receta_nombre, nueva_calificacion)
-            imp = f'Tu calificación es {nueva_calificacion} y el promedio de es {nueva_calificacion} '
+            nueva_calificacion = round(nueva_calificacion,2)
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {nueva_calificacion} '
             st.success(imp)
         else:
             # Calcular el promedio solo con las calificaciones de la receta específica
-            promedio_calificaciones = sum(calificaciones) / len(calificaciones)
+            promedio_calificaciones = round(sum(calificaciones) / len(calificaciones),2)
             imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones} '
             st.success(imp)
 
