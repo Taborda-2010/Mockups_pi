@@ -1,6 +1,10 @@
 # Se importan las libreías necesarias
-import pandas as pd  # Versión: 2.1.1
-import streamlit as st  # Versión: 1.27.2
+import pandas as pd  
+# Versión: 2.1.1
+import streamlit as st  
+# Versión: 1.27.2
+from tinydb import TinyDB, Query
+
 
 def cargar_dataset():
     '''Función para importar la base de datos
@@ -25,8 +29,83 @@ nutr_df = cargar_dataset_nutricion()
 
 # FIN ----------------------------------------------------------------
 
+
+
+# NUEVO CÓDIGO
+# INICIO -------------------------------------------------------------
+# Se crea una instancia de la base de datos TinyDB llamada 'cf.json'
+cf = TinyDB('cf.json')
+        
+def promedio(receta_nombre, nueva_calificacion):
+    """
+    Calcula el promedio de calificaciones para una receta y agrega una nueva calificación.
+
+    Esta función busca las calificaciones existentes para una receta y calcula el promedio de
+    esas calificaciones. Si no hay calificaciones previas para la receta, agrega la nueva 
+    calificación directamente. Luego, muestra un mensaje con la calificación ingresada y el 
+    promedio actual.
+
+    Parameters:
+    receta_nombre (str): El nombre de la receta para la cual se va a calcular el promedio.
+    nueva_calificacion (float): La nueva calificación a agregar (de 1 a 5).
+
+    Returns:
+    float: El promedio actual de calificaciones para la receta.
+
+    Raises:
+    Exception: Si ocurre un error durante la ejecución.
+    """
+    try:
+        receta = Query()
+        busqueda = cf.search(receta.Título == receta_nombre)
+
+        if not busqueda:
+            # Si no se encuentra la receta, agrega la calificación directamente
+            agregar_calificacion(receta_nombre, nueva_calificacion)
+            imp = f'Tu calificación es {nueva_calificacion} y el promedio es {nueva_calificacion}'
+            st.success(imp)
+        else:
+            # Extraer las calificaciones válidas de la búsqueda
+            calificaciones = [item['Calificación'] for item in busqueda if isinstance(item['Calificación'], (int, float))]
+
+            # Verificar si hay calificaciones válidas antes de calcular el promedio
+            if calificaciones:
+                calificaciones.append(nueva_calificacion)  # Agregar la nueva calificación
+                promedio_calificaciones = sum(calificaciones) / len(calificaciones)
+                imp = f'Tu calificación es {nueva_calificacion} y el promedio de calificación de esta receta es {promedio_calificaciones}'
+                st.success(imp)
+            else:
+                st.warning("No hay calificaciones válidas para calcular el promedio.")
+    except Exception as e:
+        st.warning(f"Error en la función promedio: {e}")
+
+def agregar_calificacion(receta_nombre, nueva_calificacion):
+    """
+    Agrega una nueva calificación para una receta en la base de datos.
+
+    Esta función inserta una nueva calificación para una receta específica en la base de datos.
+    El nombre de la receta y su calificación se proporcionan como argumentos.
+
+    Parameters:
+    receta_nombre (str): El nombre de la receta para la cual se va a agregar una calificación.
+    nueva_calificacion (float): La nueva calificación a agregar (de 1 a 5).
+
+    Raises:
+    Exception: Si ocurre un error durante la inserción de la calificación.
+    """
+    try:
+        receta = Query()
+        # Asegúrate de que el campo 'Título' sea el correcto en tu base de datos
+        cf.insert({"Título": receta_nombre, "Calificación": nueva_calificacion})
+    except Exception as e:
+        st.warning(f"Error en la función agregar_calificacion: {e}")
+    
+
+# FIN ----------------------------------------------------------------
+
 # Cargar el conjunto de datos
 df = cargar_dataset()
+
 
 # Establecer estilo y formato personalizado
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
@@ -64,7 +143,7 @@ if selected_option == 'Inicio':
               busqueda para excluir ingredientes no deseados.')
 
     # Ventana tratamiento de datos
-    st.markdown('<h3 style="text-align: left; color: white;"\
+    st.markdown('<h3 style="text-align: left; color: skyblue;"\
         ">Política de Tratamiento de Datos Personales</h3>', unsafe_allow_html=True)
     
     # Ruta al archivo de texto
@@ -109,7 +188,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
         # Mostrar los nombres de las recetas
         if not df_titulo.empty:
-            st.subheader('Recetas que contienen "{}":'.format(nombre))
+            st.subheader('Recetas que coinciden con "{}":'.format(nombre))
   
             # Filtrar recetas si es necesario (según ingredientes excluidos y opción de azúcar)
             recetas_filtradas = []
@@ -155,6 +234,23 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
+
+
+                    #calificación
+                    #####################################
+                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
+
+                    if calificacion:
+                        titulo = str(row['Título'])
+                        agregar_calificacion(titulo, calificacion)
+                        promedio(titulo, calificacion)
+
+                    #####################################
+
+        else:
+            st.write("No se encontraron resultados.")
+
+    cf.close()
 
 # Sección de Búsqueda de Recetas por Ingrediente
 elif selected_option == 'Búsqueda de Recetas por Ingrediente':
@@ -242,12 +338,22 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                             st.write(i+1 , preparacion[i] )
 
                         # Aquí colocamos la tabla del valor nutricional de los ingredientes
-                        st.write(tabla_valor_nutricional)        
+                        st.write(tabla_valor_nutricional) 
+
+
+                        #calificación
+                        #####################################
+                        calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
+
+                        if calificacion:
+                            titulo = str(row['Título'])
+                            agregar_calificacion(titulo, calificacion)
+                            promedio(titulo, calificacion)
+
+                        #####################################       
         else:
             st.write("No se encontraron resultados.")
-
-
-           
+         
 # Sección Búsqueda de Recetas por Filtrado
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
@@ -264,7 +370,7 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
     excluir_azucar = st.checkbox('Excluir recetas con azúcar')
 
     # Definir la lista de ingredientes no vegetarianos
-    ingredientes_no_vegetarianos = ["pollo", "carne", "pavo"]
+    ingredientes_no_vegetarianos = ["pollo", "carne", "pavo", "pechuga", "res"]
 
     #FILTRO VEGETARIANO
     # Opción para excluir recetas no vegetarianas
@@ -337,3 +443,18 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
 
                     for i in range(len(preparacion)):
                         st.write(i+1 , preparacion[i] )
+
+
+                    #calificación
+                    #####################################
+                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
+
+                    if calificacion:
+                        titulo = str(row['Título'])
+                        agregar_calificacion(titulo, calificacion)
+                        promedio(titulo, calificacion)
+
+                    #####################################
+
+    else:
+        st.write("No se encontraron resultados.")
