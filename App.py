@@ -38,15 +38,19 @@ cf = TinyDB('cf.json')
 
 
 
-def promedio(receta_nombre):
-    resultado = cf.search(receta.Nombre == receta_nombre)
-    if resultado:
-        calificaciones = [entry['Calificación'] for entry in resultado]
-        promedio = sum(calificaciones) / len(calificaciones)
-        return promedio
+def promedio(receta_nombre,nueva_calificacion):
+    if cf.search(receta.Nombre == receta_nombre):
+        resultado = cf.search(receta.Nombre == receta_nombre)
+        if resultado:
+            calificaciones = [entry['Calificación'] for entry in resultado]
+            promedio = sum(calificaciones) / len(calificaciones)
+            return promedio
+        else:
+            return None
     else:
-        return None
-
+        agregar_calificacion(receta_nombre,nueva_calificacion)
+        promedio(receta_nombre,nueva_calificacion)
+            
 
 
 def agregar_calificacion(receta_nombre, nueva_calificacion):
@@ -216,7 +220,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                         
 
-                        prom = promedio(titulo)
+                        prom = promedio(titulo,calificacion)
                         
                         imp = f'Tu calificación es {calificacion} y el promedio de calificación de esta receta es {prom} '
                         st.success(imp)
