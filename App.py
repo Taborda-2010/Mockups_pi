@@ -39,9 +39,27 @@ cf = TinyDB('cf.json')
 
             
 def promedio(receta_nombre, nueva_calificacion):
+    """
+    Calcula el promedio de calificaciones para una receta y agrega una nueva calificación.
+
+    Esta función busca las calificaciones existentes para una receta y calcula el promedio de
+    esas calificaciones. Si no hay calificaciones previas para la receta, agrega la nueva 
+    calificación directamente. Luego, muestra un mensaje con la calificación ingresada y el 
+    promedio actual.
+
+    Parameters:
+    receta_nombre (str): El nombre de la receta para la cual se va a calcular el promedio.
+    nueva_calificacion (float): La nueva calificación a agregar (de 1 a 5).
+
+    Returns:
+    float: El promedio actual de calificaciones para la receta.
+
+    Raises:
+    Exception: Si ocurre un error durante la ejecución.
+    """
     try:
         receta = Query()
-        busqueda = cf.search(receta.receta_nombre == receta_nombre)
+        busqueda = cf.search(receta.Título == receta_nombre)
 
         if not busqueda:
             agregar_calificacion(receta_nombre, nueva_calificacion)
@@ -59,6 +77,19 @@ def promedio(receta_nombre, nueva_calificacion):
         return None
 
 def agregar_calificacion(receta_nombre, nueva_calificacion):
+    """
+    Agrega una nueva calificación para una receta en la base de datos.
+
+    Esta función inserta una nueva calificación para una receta específica en la base de datos.
+    El nombre de la receta y su calificación se proporcionan como argumentos.
+
+    Parameters:
+    receta_nombre (str): El nombre de la receta para la cual se va a agregar una calificación.
+    nueva_calificacion (float): La nueva calificación a agregar (de 1 a 5).
+
+    Raises:
+    Exception: Si ocurre un error durante la inserción de la calificación.
+    """
     try:
         receta = Query()
         # Asegúrate de que el campo 'Título' sea el correcto en tu base de datos
@@ -218,7 +249,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                     #Nueva calificación
                     #####################################
-                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
+                    calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:", min_value=1, max_value=5)
 
                     if calificacion:
                         titulo = str(row['Título'])
