@@ -1,12 +1,11 @@
-# Se importan las libreías necesarias
-
+# Se importan las librerías necesarias
 # Versión Pandas: 2.1.1
 import pandas as pd  
 
 # Versión: 1.27.2
 import streamlit as st  
 
-
+# Versión: 4.8.0
 from tinydb import TinyDB, Query
 
 
@@ -16,9 +15,6 @@ def cargar_dataset():
     df = pd.read_csv('db_es.csv')
     return df
 
-# NUEVO CÓDIGO
-# INICIO ----------------------------------------------------------------
-
 def cargar_dataset_nutricion():
     """
     Función para importar la base de datos
@@ -27,18 +23,6 @@ def cargar_dataset_nutricion():
     """
     nutr_df = pd.read_csv('db_nutricion.csv', encoding="ISO-8859-1")
     return nutr_df
-
-# Cargar datset de datos nutricionales
-nutr_df = cargar_dataset_nutricion()
-
-# FIN ----------------------------------------------------------------
-
-
-
-# NUEVO CÓDIGO
-# INICIO -------------------------------------------------------------
-# Se crea una instancia de la base de datos TinyDB llamada 'cf.json'
-cf = TinyDB('cf.json')
         
 def promedio(receta_nombre, nueva_calificacion):
     """
@@ -103,13 +87,15 @@ def agregar_calificacion(receta_nombre, nueva_calificacion):
         cf.insert({"Título": receta_nombre, "Calificación": nueva_calificacion})
     except Exception as e:
         st.warning(f"Error en la función agregar_calificacion: {e}")
-    
 
-# FIN ----------------------------------------------------------------
+# Se crea una instancia de la base de datos TinyDB llamada 'cf.json'
+cf = TinyDB('cf.json')
 
 # Cargar el conjunto de datos
 df = cargar_dataset()
 
+# Cargar datset de datos nutricionales
+nutr_df = cargar_dataset_nutricion()
 
 # Establecer estilo y formato personalizado
 st.markdown('<h1 style="text-align: left; color: skyblue;">CulinaryCraft</h1>',\
@@ -122,8 +108,6 @@ selected_option = st.sidebar.selectbox(
     ['Inicio', 'Búsqueda por Nombre de Receta','Búsqueda de Recetas por Ingrediente', 'Búsqueda de Recetas por Filtrado']
 )
 
-# VALOR NUTRICIONAL
-# INICIO --------------------------------
 # Crear nueva columna con los valores separados por & para que sea una lista
 df['NER_separados'] = df['NER'].str.split('&')
 nutr_df['name'] = nutr_df['name'].str.split('&')
@@ -133,10 +117,7 @@ valor_nutricional = df.explode('NER_separados').merge(
     nutr_df.explode('name'),
     left_on = 'NER_separados',
     right_on = 'name',
-    how = 'left'
-)
-# FIN ----------------------------------------------------------------
-
+    how = 'left')
 
 # Interfaz de usuario
 if selected_option == 'Inicio':
@@ -175,7 +156,7 @@ if selected_option == 'Inicio':
         # Aquí puedes continuar con el resto de tu aplicación si el usuario acepta
         pass
 
-# Sección de Búsqueda de Recetas por Ingrediente
+# Sección de Búsqueda de Búsqueda por Nombre de Receta
 elif selected_option == 'Búsqueda por Nombre de Receta':
     st.markdown('<h3 id="busqueda" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda por Nombre de Receta</h3>',\
@@ -211,7 +192,7 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
 
                 titulo = row['Título']
 
-                # NUEVA VARIABLE PARA VALOR NUTRICIONAL
+                # Variable que guarda el valor nutricional
                 ingredientes_receta = row['NER'].split('&')
 
 
@@ -257,19 +238,21 @@ elif selected_option == 'Búsqueda por Nombre de Receta':
                         st.write(i+1 , preparacion[i] )
 
                     # Aquí colocamos la tabla del valor nutricional de los ingredientes
-                    st.write(tabla_valor_nutricional) 
+                    st.write(tabla_valor_nutricional)
 
-                    #calificación
-                    #####################################
+                    # Solicita al usuario la calificación
                     calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
 
+                    # Verifica si el usuario proporcionó una calificación.
                     if calificacion:
+                        # Obtiene el título de la receta en formato de string
                         titulo = str(row['Título'])
+                        
+                        # Llama a una función para agregar la calificación a la receta
                         agregar_calificacion(titulo, calificacion)
+                        
+                        # Llama a una función para calcular el nuevo promedio de calificaciones de la receta
                         promedio(titulo, calificacion)
-
-                    #####################################
-
         else:
             st.write("No se encontraron resultados.")
 
@@ -313,15 +296,14 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
 
                     titulo = row['Título']
 
-                    # NUEVA VARIABLE PARA VALOR NUTRICIONAL
+                    # Variable para guardar el valor nutricional
                     ingredientes_receta = row['NER'].split('&')
 
                     # Mostrar la receta si no se excluye
                     st.markdown(f'<h4 id="filtrado" style="text-align: left; color: skyblue;"\
                     " font-style: italic;">{titulo}</h4>',\
                         unsafe_allow_html=True)
-                    
-                    # INICIO ----------------------------------------------------------------
+
 
                     # Lista para almacenar el valor nutricional de cada ingrediente
                     nutricional = []
@@ -334,8 +316,6 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
 
                     # convirtiendo lista en un dataframe para mostrarlo como tabla
                     tabla_valor_nutricional = pd.DataFrame(nutricional)
-
-                    # FIN ----------------------------------------------------------------
 
                     # Agregar una sección de detalles emergente
                     with st.expander(f'Detalles de la receta: {row["Título"]}', expanded=False):
@@ -361,23 +341,28 @@ elif selected_option == 'Búsqueda de Recetas por Ingrediente':
                             st.write(i+1 , preparacion[i] )
 
                         # Aquí colocamos la tabla del valor nutricional de los ingredientes
-                        st.write(tabla_valor_nutricional) 
+                        st.write(tabla_valor_nutricional)
 
-
-                        #calificación
-                        #####################################
+                        # Solicita al usuario la calificación
                         calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
 
+                        # Verifica si el usuario proporcionó una calificación.
                         if calificacion:
+                            # Obtiene el título de la receta en formato de string
                             titulo = str(row['Título'])
+                            
+                            # Llama a una función para agregar la calificación a la receta
                             agregar_calificacion(titulo, calificacion)
-                            promedio(titulo, calificacion)
-
-                        #####################################       
+                            
+                            # Llama a una función para calcular el nuevo promedio de calificaciones de la receta
+                            promedio(titulo, calificacion) 
+       
         else:
             st.write("No se encontraron resultados.")
-         
-# Sección Búsqueda de Recetas por Filtrado
+    
+    cf.close()
+
+# Sección de Búsqueda de Búsqueda de Recetas por Filtrado
 elif selected_option == 'Búsqueda de Recetas por Filtrado':
     st.markdown('<h3 id="filtrado" style="text-align: left; color: white;"\
                 " font-style: italic;">Búsqueda de Recetas por Filtrado</h3>',\
@@ -484,19 +469,23 @@ elif selected_option == 'Búsqueda de Recetas por Filtrado':
                         st.write(i+1 , preparacion[i] )
 
                     # Aquí colocamos la tabla del valor nutricional de los ingredientes
-                    st.write(tabla_valor_nutricional) 
+                    st.write(tabla_valor_nutricional)
 
-
-                    #calificación
-                    #####################################
+                    # Solicita al usuario la calificación
                     calificacion = st.number_input(f"¿Cuánto le pones a esta receta {row['Título']} del 1 al 5?:")
 
+                    # Verifica si el usuario proporcionó una calificación.
                     if calificacion:
+                        # Obtiene el título de la receta en formato de string
                         titulo = str(row['Título'])
+                        
+                        # Llama a una función para agregar la calificación a la receta
                         agregar_calificacion(titulo, calificacion)
-                        promedio(titulo, calificacion)
-
-                    #####################################
+                        
+                        # Llama a una función para calcular el nuevo promedio de calificaciones de la receta
+                        promedio(titulo, calificacion) 
 
     else:
         st.write("No se encontraron resultados.")
+
+    cf.close()
