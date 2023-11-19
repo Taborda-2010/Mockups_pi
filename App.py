@@ -170,7 +170,11 @@ if get_current_user() is not None:
     st.sidebar.title('Tabla de Contenido')
     selected_option = st.sidebar.selectbox("Menú", ['Búsqueda por Nombre de Receta',
                                         'Búsqueda de Recetas por Ingrediente',
-                                        'Búsqueda de Recetas por Filtrado', 'Cerrar sesión'])
+                                        'Búsqueda de Recetas por Filtrado'])
+
+    if st.sidebar.button('Cerrar sesión'):
+            st.session_state.username = None
+            st.success("Sesión cerrada con éxito. Por favor, inicie sesión nuevamente.")
 
     username = st.session_state.username
     User = Query()
@@ -508,17 +512,14 @@ if get_current_user() is not None:
 
         cf.close()
 
-    elif selected_option == "Cerrar sesión":
-        if st.button('Salir'):
-            st.session_state.username = None
-            st.success("Sesión cerrada con éxito. Por favor, inicie sesión nuevamente.")
+    #elif selected_option == "Cerrar sesión":
+        
         
 
 else:
     # Menú desplegable en la barra lateral para usuarios no logeados
     st.sidebar.title('Tabla de Contenido')
-    selected_option = st.sidebar.selectbox("Menú", ['Inicio',
-                                        'Registrarse','Iniciar sesión',
+    selected_option = st.sidebar.selectbox("Menú", ['Inicio','Iniciar sesión', 'Registrarse',
                                         'Búsqueda por Nombre de Receta'])
 
     # Sección de inicio
@@ -529,8 +530,30 @@ else:
               Además podrás filtrar las recetas por categorías y criterios de\
               busqueda para excluir ingredientes no deseados.')
 
+        
+
     # Sección de Registro
-    elif selected_option == "Registrarse":
+    
+    # Sección de Inicio de sesión
+    elif selected_option == 'Iniciar sesión':
+        st.write("Bienvenido al inicio de la aplicación.")
+
+        # Campos de inicio de sesión
+        username = st.text_input("Usuario:")
+        password = st.text_input("Contraseña:", type="password")
+
+        if st.button("Iniciar Sesión"):
+            login_successful, message = login(username, password)
+            if login_successful:
+                st.success(message)
+                # Almacenar el nombre de usuario en la sesión
+                st.session_state.username = username  
+
+            elif not login_successful:
+                st.error(message)
+        
+
+    elif selected_option == 'Registrarse':
             st.write("Registro de Usuario")
 
             # Campos de registro
@@ -575,23 +598,6 @@ else:
             if not st.session_state.politica_vista:
                 st.warning("Por favor, ve la política de datos personales antes de registrarte.")
 
-    # Sección de Inicio de sesión
-    elif selected_option == 'Iniciar sesión':
-        st.write("Bienvenido al inicio de la aplicación.")
-
-        # Campos de inicio de sesión
-        username = st.text_input("Usuario:")
-        password = st.text_input("Contraseña:", type="password")
-
-        if st.button("Iniciar Sesión"):
-            login_successful, message = login(username, password)
-            if login_successful:
-                st.success(message)
-                # Almacenar el nombre de usuario en la sesión
-                st.session_state.username = username  
-
-            elif not login_successful:
-                st.error(message)
 
     # Sección de Búsqueda de Búsqueda por Nombre de Receta
     elif selected_option == 'Búsqueda por Nombre de Receta':
